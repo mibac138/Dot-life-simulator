@@ -1,42 +1,29 @@
 package com.mibac.dots.wen.util;
 
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_AI;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_BREED;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_DEATH;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_ENERGY;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_INPUT;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_MOVE;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+
 public class Logger {
-    public static final int ENERGY = 0;
-    public static final int DEATH = 1;
-    public static final int AI = 2;
-    public static final int MOVE = 3;
-    public static final int OTHER = 4;
-    public static final int INPUT = 5;
-    public static final int BREED = 6;
-
-    static boolean[] log;
-
-    public Logger() {
-        Logger.log = new boolean[7];
-        Logger.log[0] = Debug.PRINT_ENERGY;
-        Logger.log[1] = Debug.PRINT_DEATH;
-        Logger.log[2] = Debug.PRINT_AI;
-        Logger.log[3] = Debug.PRINT_MOVE;
-        Logger.log[4] = Debug.PRINT_OTHER;
-        Logger.log[5] = Debug.PRINT_INPUT;
-        Logger.log[6] = Debug.PRINT_BREED;
-    }
-
-    public static void log(String message, int type) {
-        if (log[type])
-            if (type == ENERGY)
+    public static void log(String message, Debug.Type type) {
+        if (type.isEnabled())
+            if (type == PRINT_ENERGY)
                 System.out.println("ENERGY " + message);
-            else if (type == DEATH)
+            else if (type == PRINT_DEATH)
                 System.out.println("DEATH  [" + message + "]");
-            else if (type == AI)
+            else if (type == PRINT_AI)
                 System.out.println("AI     " + message);
-            else if (type == MOVE)
+            else if (type == PRINT_MOVE)
                 System.out.println("MOVE   " + message);
-            else if (type == OTHER)
+            else if (type == PRINT_OTHER)
                 System.out.println("OTHER  " + message);
-            else if (type == INPUT)
+            else if (type == PRINT_INPUT)
                 System.out.println("INPUT  " + message);
-            else if (type == BREED)
+            else if (type == PRINT_BREED)
                 System.out.println("BREED  " + message);
             else
                 System.out.println("UNKNOWN! " + message);

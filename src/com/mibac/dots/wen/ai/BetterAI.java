@@ -1,6 +1,6 @@
 package com.mibac.dots.wen.ai;
 
-import static com.mibac.dots.wen.util.Logger.AI;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_AI;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.util.Vector;
@@ -21,12 +21,12 @@ public class BetterAI extends EntityAI {
         // Goto food
         if (nearestFood != null) {
             creature.setTarget(nearestFood.getPosition());
-            log("found food -- following", AI);
+            log("found food -- following", PRINT_AI);
 
             if (creature.getEnergy() + nearestFood.getValue() <= creature.getMaxEnergy())
-                log("eating", AI);
+                log("eating", PRINT_AI);
             else {
-                log("waiting", AI);
+                log("waiting", PRINT_AI);
                 creature.setTarget(null);
             }
         }
@@ -36,7 +36,7 @@ public class BetterAI extends EntityAI {
 
         if (nearestMate != null) {
             creature.setTarget(nearestMate.getPosition());
-            log("nevermind -- found mate -- following", AI);
+            log("nevermind -- found mate -- following", PRINT_AI);
         }
     }
 

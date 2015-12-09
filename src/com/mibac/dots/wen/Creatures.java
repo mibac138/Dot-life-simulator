@@ -1,6 +1,6 @@
 package com.mibac.dots.wen;
 
-import static com.mibac.dots.wen.util.Logger.OTHER;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.event.ActionEvent;
@@ -72,7 +72,7 @@ public class Creatures implements ActionListener {
         double delta = (System.nanoTime() - time) / 1E9;
         time = currentTime;
 
-        log("! DELTA ! " + delta, OTHER);
+        log("! DELTA ! " + delta, PRINT_OTHER);
 
         listener.handleKeys();
         listener.handleMouse(view);

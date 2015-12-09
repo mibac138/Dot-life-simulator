@@ -1,9 +1,9 @@
 package com.mibac.dots.wen.controller;
 
-import static com.mibac.dots.wen.util.Logger.BREED;
-import static com.mibac.dots.wen.util.Logger.DEATH;
-import static com.mibac.dots.wen.util.Logger.ENERGY;
-import static com.mibac.dots.wen.util.Logger.MOVE;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_BREED;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_DEATH;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_ENERGY;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_MOVE;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.geom.Point2D.Double;
@@ -58,13 +58,13 @@ public class WorldUpdater {
             creature.setPregnant(false);
             Double motherPosition = creature.getPosition();
 
-            log("Born:", BREED);
+            log("Born:", PRINT_BREED);
 
             ArrayList<Creature> newBorn = creature.getFetuses();
             for (Creature c : newBorn) {
                 c.setPosition(new Double(motherPosition.getX(), motherPosition.getY()));
                 newBornList.add(c);
-                log("- " + c, BREED);
+                log("- " + c, PRINT_BREED);
             }
 
             creature.clearFetuses();
@@ -93,15 +93,15 @@ public class WorldUpdater {
 
                 creature.getPosition().x += x * alpha;
                 creature.getPosition().y += y * alpha;
-                log("x change: " + x * alpha + "\n       y change: " + y * alpha, MOVE);
+                log("x change: " + x * alpha + "\n       y change: " + y * alpha, PRINT_MOVE);
             } else {
                 creature.setPosition(creature.getTarget());
                 log("target reached (speed = " + speed + ", position = " + position + ", target = "
-                        + target + ")", MOVE);
+                        + target + ")", PRINT_MOVE);
                 creature.setTarget(null);
             }
         } else
-            log("creature's target is equal to null", MOVE);
+            log("creature's target is equal to null", PRINT_MOVE);
     }
 
     private void handleMating(Creature creature, double delta) {
@@ -144,7 +144,7 @@ public class WorldUpdater {
                                                                                                  // 1/4th
                                 / 1.25 * Math.random());
                 if (fetusAmount > 0) {
-                    log("Got pregnant", BREED);
+                    log("Got pregnant", PRINT_BREED);
                     mother.setPregnant(true);
 
                     for (int i = 0; i < Math.round(mother.getBreedFactor() * Math.random()); i++)
@@ -197,7 +197,7 @@ public class WorldUpdater {
             if (creature.getPosition().distance(food.getPosition()) < creature.getSpeed() * delta
                     * 1.25) {
                 creature.setEnergy(creature.getEnergy() + food.getValue());
-                log("ate food with value of " + food.getValue(), ENERGY);
+                log("ate food with value of " + food.getValue(), PRINT_ENERGY);
                 i.remove();
             }
         }
@@ -209,7 +209,7 @@ public class WorldUpdater {
 
         if (creature.getAge() >= creature.getMaxAge()) {
             iterator.remove();
-            log(" age ", DEATH);
+            log(" age ", PRINT_DEATH);
             return false;
         }
 
@@ -227,13 +227,13 @@ public class WorldUpdater {
         if (creature.isPregnant())
             fatigue += creature.getBreedSpeed() + creature.getFetuses().size() * 0.15;
 
-        log("lost " + fatigue * delta, ENERGY);
+        log("lost " + fatigue * delta, PRINT_ENERGY);
 
         creature.setEnergy(creature.getEnergy() - fatigue * delta);
 
         if (creature.getEnergy() <= 0) {
             iterator.remove();
-            log("energy", DEATH);
+            log("energy", PRINT_DEATH);
             return false;
         }
 

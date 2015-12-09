@@ -1,5 +1,10 @@
 package com.mibac.dots.wen.view;
 
+import static com.mibac.dots.wen.util.Debug.Type.DRAW;
+import static com.mibac.dots.wen.util.Debug.Type.DRAW_BORDER;
+import static com.mibac.dots.wen.util.Debug.Type.DRAW_PATH;
+import static com.mibac.dots.wen.util.Debug.Type.DRAW_VISION;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D.Double;
@@ -9,7 +14,6 @@ import javax.swing.JPanel;
 import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Creature.Gender;
 import com.mibac.dots.wen.creatures.WorldModel;
-import com.mibac.dots.wen.util.Debug;
 
 public class WorldView extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -66,20 +70,20 @@ public class WorldView extends JPanel {
                     creatureZoomed);
         }
 
-        if (Debug.DEBUG) {
+        if (DRAW.isEnabled()) {
             g.setColor(Color.RED);
-            if (Debug.DRAW_BORDER)
+            if (DRAW_BORDER.isEnabled())
                 g.drawRect(applyZoom(offsetX), applyZoom(offsetY), applyZoom(world.getWidth()),
                         applyZoom(world.getHeight()));
 
             world.getCreatures().stream().forEach(creature -> {
-                if (Debug.DRAW_PATH && creature.getTarget() != null)
+                if (DRAW_PATH.isEnabled() && creature.getTarget() != null)
                     g.drawLine(applyZoom(creature.getPosition().getX() + offsetX),
                             applyZoom(creature.getPosition().getY() + offsetY),
                             applyZoom(creature.getTarget().getX() + offsetX),
                             applyZoom(creature.getTarget().getY() + offsetY));
 
-                if (Debug.DRAW_VISION) {
+                if (DRAW_VISION.isEnabled()) {
                     int vision = (int) creature.getVisionRange();
 
                     g.drawOval(applyZoom(creature.getPosition().getX() - vision + offsetX),

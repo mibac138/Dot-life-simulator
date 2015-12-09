@@ -1,6 +1,6 @@
 package com.mibac.dots.wen.view;
 
-import static com.mibac.dots.wen.util.Logger.INPUT;
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_INPUT;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.MouseInfo;
@@ -86,13 +86,13 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         controller.changeZoomFactor(e.getWheelRotation());
-        log("Wheel moved by " + e.getWheelRotation(), INPUT);
+        log("Wheel moved by " + e.getWheelRotation(), PRINT_INPUT);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         click = screenToView(e.getPoint());
-        log("Clicked at " + click, INPUT);
+        log("Clicked at " + click, PRINT_INPUT);
     }
 
     @Override
@@ -107,13 +107,13 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
 
         if (e.getButton() == MouseEvent.BUTTON1) {
             LMB = true;
-            log("Pressed LMB", INPUT);
+            log("Pressed LMB", PRINT_INPUT);
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             MMB = true;
-            log("Pressed MMB", INPUT);
+            log("Pressed MMB", PRINT_INPUT);
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             RMB = true;
-            log("Pressed RMB", INPUT);
+            log("Pressed RMB", PRINT_INPUT);
         }
     }
 
@@ -121,26 +121,26 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             LMB = false;
-            log("Released LMB", INPUT);
+            log("Released LMB", PRINT_INPUT);
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             MMB = false;
-            log("Released MMB", INPUT);
+            log("Released MMB", PRINT_INPUT);
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             RMB = false;
-            log("Released RMB", INPUT);
+            log("Released RMB", PRINT_INPUT);
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         pressed.add(e.getKeyCode());
-        log("Pressed " + e.getKeyChar(), INPUT);
+        log("Pressed " + e.getKeyChar(), PRINT_INPUT);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         pressed.remove(e.getKeyCode());
-        log("Released " + e.getKeyChar(), INPUT);
+        log("Released " + e.getKeyChar(), PRINT_INPUT);
     }
 
     @Override
