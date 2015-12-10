@@ -51,6 +51,9 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
     private JMenu statisticsMenu;
     private JMenuItem showStatisticsItem;
 
+    private JMenu helpMenu;
+    private JMenuItem debugOptionsItem;
+
     private JPanel entityInfo;
     private JLabel entityInfoToString;
     private JLabel entityPosition;
@@ -218,9 +221,15 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
         showStatisticsItem.addActionListener(this);
         statisticsMenu.add(showStatisticsItem);
 
+        helpMenu = new JMenu("Help");
+        debugOptionsItem = new JMenuItem("Open debug options");
+        debugOptionsItem.addActionListener(this);
+        helpMenu.add(debugOptionsItem);
+
         menuBar.add(fileMenu);
         menuBar.add(worldMenu);
         menuBar.add(statisticsMenu);
+        menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
     }
@@ -282,6 +291,8 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == closeItem)
             System.exit(0);
+        else if (e.getSource() == debugOptionsItem)
+            new DebugOptionsView();
     }
 
     @Override

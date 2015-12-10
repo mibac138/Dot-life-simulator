@@ -20,6 +20,11 @@ public class Debug {
         public boolean isEnabled() {
             return enabled;
         }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+            System.out.println(enabled);
+        }
     }
 
     private static final boolean DEBUG = true;
