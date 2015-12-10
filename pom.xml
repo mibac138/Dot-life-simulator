@@ -22,8 +22,8 @@
             <goals>
               <goal>report</goal>
             </goals>
-        </execution>
-        <executions>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
