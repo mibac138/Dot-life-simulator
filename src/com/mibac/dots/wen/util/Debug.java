@@ -41,7 +41,7 @@ public class Debug {
     private static final boolean PRINT_BREED = PRINT && true;
     private static final boolean PRINT_MOVE = PRINT && false;
     private static final boolean PRINT_INPUT = PRINT && false;
-    private static final boolean PRINT_OTHER = PRINT && false;
+    private static final boolean PRINT_OTHER = PRINT && true;
 
     private static final boolean CMDS = DEBUG && false;
 }

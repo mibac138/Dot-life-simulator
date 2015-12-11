@@ -234,6 +234,14 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
         setJMenuBar(menuBar);
     }
 
+    public JSlider getSpeedSlider() {
+        return speedSlider;
+    }
+
+    public void setSpeedSlider(JSlider speedSlider) {
+        this.speedSlider = speedSlider;
+    }
+
     public void setViewInputFocus() {
         controller.setViewInputFocus();
     }

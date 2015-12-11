@@ -58,11 +58,12 @@ public class WorldUpdater {
             creature.setPregnant(false);
             Double motherPosition = creature.getPosition();
 
-            log("Born:", PRINT_BREED);
+            log(creature.getClass().getSimpleName() + " born:", PRINT_BREED);
 
             ArrayList<Creature> newBorn = creature.getFetuses();
             for (Creature c : newBorn) {
                 c.setPosition(new Double(motherPosition.getX(), motherPosition.getY()));
+                c.setAI(creature.getAI());
                 newBornList.add(c);
                 log("- " + c, PRINT_BREED);
             }
@@ -142,9 +143,10 @@ public class WorldUpdater {
                         (int) Math.round((mother.getBreedFactor() + father.getBreedFactor() / 4) // father
                                                                                                  // has
                                                                                                  // 1/4th
+                                                                                                 // share
                                 / 1.25 * Math.random());
                 if (fetusAmount > 0) {
-                    log("Got pregnant", PRINT_BREED);
+                    log(creature + " got pregnant", PRINT_BREED);
                     mother.setPregnant(true);
 
                     for (int i = 0; i < Math.round(mother.getBreedFactor() * Math.random()); i++)
@@ -174,9 +176,8 @@ public class WorldUpdater {
                 model.getMutationRate());
         Gender gender = Math.random() >= 0.5 ? Gender.MALE : Gender.FEMALE;
 
-        return new Creature(null, mother.getAI(), gender, 0, maxAge, maxEnergy, maxEnergy, speed,
-                visionRange, matingEnergyNeeded, breedLength, breedSpeed, breedCooldown,
-                breedFactor);
+        return new Creature(null, null, gender, 0, maxAge, maxEnergy, maxEnergy, speed, visionRange,
+                matingEnergyNeeded, breedLength, breedSpeed, breedCooldown, breedFactor);
     }
 
     private double mutate(double sum, int n, double mutationRate) {

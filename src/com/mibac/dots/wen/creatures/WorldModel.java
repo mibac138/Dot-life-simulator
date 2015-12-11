@@ -1,5 +1,8 @@
 package com.mibac.dots.wen.creatures;
 
+import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+import static com.mibac.dots.wen.util.Logger.log;
+
 import java.util.Vector;
 
 public class WorldModel {
@@ -88,7 +91,8 @@ public class WorldModel {
     }
 
     public void addCreature(Creature creature) {
-        creature.getAI().setWorldModel(this).init();
+        log("Adding new creature: " + creature, PRINT_OTHER);
+        creature.getAI().setCreature(creature).setWorldModel(this).init();
         creatures.addElement((Creature) fixPosition(creature));
     }
 

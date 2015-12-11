@@ -3,6 +3,8 @@ package com.mibac.dots.wen.controller;
 import java.awt.geom.Point2D.Double;
 import java.util.Vector;
 
+import javax.swing.JSlider;
+
 import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Entity;
 import com.mibac.dots.wen.creatures.Food;
@@ -40,10 +42,7 @@ public class WorldController {
     }
 
     public void changeZoomFactor(int change) {
-        int zoomFactor = view.getZoomFactor();
-
-        if (zoomFactor + change > 0)
-            view.setZoomFactor(zoomFactor + change);
+        setZoomFactor(view.getZoomFactor() + change);
     }
 
     public void setZoomFactor(int zoomFactor) {
@@ -61,10 +60,16 @@ public class WorldController {
 
     public void setMaxSpeedFactor(int maxSpeedFactor) {
         model.setMaxSpeedFactor(maxSpeedFactor);
+        JSlider speed = window.getSpeedSlider();
+        speed.setMaximum(model.getMaxSpeedFactor());
+        window.setSpeedSlider(speed);
     }
 
     public void setSpeedFactor(int speedFactor) {
         model.setSpeedFactor(speedFactor);
+        JSlider speed = window.getSpeedSlider();
+        speed.setValue(model.getSpeedFactor());
+        window.setSpeedSlider(speed);
     }
 
     public int getSpeedFactor() {

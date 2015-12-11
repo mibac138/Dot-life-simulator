@@ -47,7 +47,6 @@ public class Creature extends Entity {
             double breedFactor) {
         this.position = position;
         this.ai = ai;
-        this.ai.setCreature(this);
         this.gender = gender;
         this.age = age;
         this.maxAge = maxAge;
