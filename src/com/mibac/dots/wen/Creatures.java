@@ -59,7 +59,7 @@ public class Creatures implements ActionListener {
         window = new MainWindow(controller, view);
 
         controller.setMainWindow(window);
-        controller.addCreature(new Creature(new Double(900d, 700d)));
+        controller.addEntity(new Creature(new Double(900d, 700d)));
 
         timer = new Timer(REFRESH_TIME, this);
         timer.start();

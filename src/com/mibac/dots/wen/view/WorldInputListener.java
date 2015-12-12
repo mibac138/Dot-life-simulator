@@ -72,7 +72,7 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
 
         if (click != null) {
             Creature c = controller.getCreature(new Double(click.x, click.y));
-            System.out.println("Creature c = " + c);
+            log("Clicked: Creature c = " + c, PRINT_INPUT);
             if (c != null)
                 controller.setSelectedCreature(c);
             // JOptionPane.showMessageDialog(null, "Found a creature! " +

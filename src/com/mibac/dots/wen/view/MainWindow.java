@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
@@ -54,6 +56,7 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
     private JMenu helpMenu;
     private JMenuItem debugOptionsItem;
 
+    private Creature creature;
     private JPanel entityInfo;
     private JLabel entityInfoToString;
     private JLabel entityPosition;
@@ -72,6 +75,8 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
     private JLabel entityBreedCooldown;
     private JLabel entityBreedCooldownTime;
     private JLabel entityBreedFactor;
+    private JButton entityKill;
+    private JButton entityClone;
 
     public MainWindow(WorldController controller, WorldView view) {
         this.controller = controller;
@@ -159,6 +164,12 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
         entityBreedFactor.setBounds(265, 45, 250, 15);
         entityInfo.setLayout(null);
 
+        entityKill = new JButton("Kill entity");
+        entityKill.setBounds(265, 205, 100, 15);
+        entityKill.addActionListener(this);
+        entityClone = new JButton("Clone entity");
+        entityClone.setBounds(265, 225, 100, 15);
+        entityClone.addActionListener(this);
 
         entityInfo.add(entityInfoToString);
         entityInfo.add(entityPosition);
@@ -177,6 +188,8 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
         entityInfo.add(entityBreedCooldown);
         entityInfo.add(entityBreedCooldownTime);
         entityInfo.add(entityBreedFactor);
+        entityInfo.add(entityKill);
+        entityInfo.add(entityClone);
 
         rightContainer.add(textLabel);
         rightContainer.add(Box.createVerticalStrut(10));
@@ -248,26 +261,12 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
 
     public void displayEntity(Creature c) {
         if (c == null) {
-            entityInfoToString.setText("");
-            entityPosition.setText("");
-            entityAge.setText("");
-            entityMaxAge.setText("");
-            entityEnergy.setText("");
-            entityMaxEnergy.setText("");
-            entitySpeed.setText("");
-            entityVisionRange.setText("");
-            entityMatingEnergyNeeded.setText("");
-            entityBreedLength.setText("");
-            entityBreedSpeed.setText("");
-            entityBreedTime.setText("");
-            entityPregnant.setText("");
-            entityAI.setText("");
-            entityBreedCooldown.setText("");
-            entityBreedCooldownTime.setText("");
-            entityBreedFactor.setText("");
+            creature = null;
+            entityInfo.setVisible(false);
             return;
         }
 
+        creature = c;
         entityInfoToString.setText(c.toString());
         entityPosition.setText("Position: " + String.format("%.2f", c.getPosition().getX()) + ", "
                 + String.format("%.2f", c.getPosition().getY()));
@@ -289,6 +288,7 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
         entityBreedCooldownTime
                 .setText("Breed cooldown time: " + String.format("%.2f", c.getBreedCooldownTime()));
         entityBreedFactor.setText("Breed factor: " + String.format("%.2f", c.getBreedFactor()));
+        entityInfo.setVisible(true);
     }
 
     public void update(double delta) {
@@ -299,8 +299,18 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == closeItem)
             System.exit(0);
+        else if (e.getSource() == createCreatureItem)
+            new CreateCreatureView(controller);
         else if (e.getSource() == debugOptionsItem)
             new DebugOptionsView();
+        else if (e.getSource() == entityKill) {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to kill this creature?", "Confirmation",
+                    JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION)
+                controller.removeEntity(creature);
+        } else if (e.getSource() == entityClone)
+            new CreateCreatureView(creature, controller);
     }
 
     @Override

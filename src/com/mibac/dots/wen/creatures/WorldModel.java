@@ -8,6 +8,7 @@ import java.util.Vector;
 public class WorldModel {
     private Vector<Creature> creatures;
     private Vector<Food> food;
+    private double goodMutationChance;
     private double mutationRate;
     private int width, height;
     private int selectedCreature;
@@ -16,11 +17,12 @@ public class WorldModel {
     private int maxFoodAmount;
     private short foodCreationRatio;
 
-    WorldModel(Vector<Creature> creatures, Vector<Food> food, double mutationRate, int width,
-            int height, int speedFactor, int maxSpeedFactor, int maxFoodAmount,
-            short foodCreationRatio) {
+    WorldModel(Vector<Creature> creatures, Vector<Food> food, double goodMutationChance,
+            double mutationRate, int width, int height, int speedFactor, int maxSpeedFactor,
+            int maxFoodAmount, short foodCreationRatio) {
         this.creatures = new Vector<>();
         this.food = new Vector<>();
+        this.goodMutationChance = goodMutationChance;
         this.mutationRate = mutationRate;
         this.width = width;
         this.height = height;
@@ -32,6 +34,14 @@ public class WorldModel {
 
         creatures.stream().forEach(c -> addCreature(c));
         food.stream().forEach(f -> addFood(f));
+    }
+
+    public double getGoodMutationChance() {
+        return goodMutationChance;
+    }
+
+    public void setGoodMutationChance(double goodMutationChance) {
+        this.goodMutationChance = goodMutationChance;
     }
 
     public double getMutationRate() {
@@ -110,6 +120,13 @@ public class WorldModel {
             addCreature((Creature) entity);
         else if (entity instanceof Food)
             addFood((Food) entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        if (entity instanceof Creature)
+            removeCreature((Creature) entity);
+        else if (entity instanceof Food)
+            removeFood((Food) entity);
     }
 
     public void removeFood(Food food) {

@@ -55,16 +55,17 @@ public class DebugOptionsView extends JFrame implements ActionListener {
         draw.setSelected(DRAW.isEnabled());
         draw.addActionListener(this);
         draw_path = new JCheckBox("Draw path");
-        draw_path.setBounds(10, 45, w, h);
+        draw_path.setBounds(15, 45, w, h);
         draw_path.addActionListener(this);
+        draw_path.setSelected(DRAW_PATH.isEnabled());
         draw_vision = new JCheckBox("Draw vision");
         draw_vision.setBounds(15, 65, w, h);
         draw_vision.addActionListener(this);
         draw_vision.setSelected(DRAW_VISION.isEnabled());
         draw_border = new JCheckBox("Draw border");
         draw_border.setBounds(15, 85, w, h);
-        draw_border.setSelected(DRAW_BORDER.isEnabled());
         draw_border.addActionListener(this);
+        draw_border.setSelected(DRAW_BORDER.isEnabled());
 
         print = new JCheckBox("Print");
         print.setBounds(10, 105, w, h);

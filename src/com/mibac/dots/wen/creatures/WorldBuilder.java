@@ -6,6 +6,7 @@ import java.util.Vector;
 public class WorldBuilder {
     private Vector<Creature> creatures;
     private Vector<Food> food;
+    private double goodMutationChance;
     private double mutationRate;
     private int width, height;
     private int speedFactor;
@@ -16,6 +17,7 @@ public class WorldBuilder {
     public WorldBuilder(int width, int height) {
         this.creatures = new Vector<>();
         this.food = new Vector<>();
+        this.goodMutationChance = 0.6;
         this.mutationRate = 0.1;
         this.width = width;
         this.height = height;
@@ -70,8 +72,13 @@ public class WorldBuilder {
         return this;
     }
 
+    public WorldBuilder setGoodMutationChance(double goodMutationChance) {
+        this.goodMutationChance = goodMutationChance;
+        return this;
+    }
+
     public WorldModel build() {
-        return new WorldModel(creatures, food, mutationRate, width, height, speedFactor,
-                maxSpeedFactor, maxFoodAmount, foodCreationRatio);
+        return new WorldModel(creatures, food, goodMutationChance, mutationRate, width, height,
+                speedFactor, maxSpeedFactor, maxFoodAmount, foodCreationRatio);
     }
 }

@@ -38,20 +38,15 @@ public abstract class EntityAI {
 
     protected abstract boolean isFoodInRangeRequired();
 
-
     private Vector<Creature> getCreaturesInRange() {
         @SuppressWarnings("unchecked")
         Vector<Creature> creatures = (Vector<Creature>) world.getCreatures().clone();
-        Collections.sort(creatures, (c1, c2) -> {
-            // System.out.println("COMPARING!! " + c1 + " with " + c2);
-            try {
-                return Double.compare(c1.getPosition().distance(creature.getPosition()),
-                        c2.getPosition().distance(creature.getPosition()));
-            } catch (NullPointerException e) {
-                System.out.println(creature.getPosition() + " ");
-                throw e;
-            }
-        });
+        Collections
+                .sort(creatures,
+                        (c1, c2) -> Double.compare(
+                                c1.getPosition().distance(creature.getPosition()),
+                                c2.getPosition().distance(creature.getPosition())));
+
         creatures.removeIf(
                 c -> c.getPosition().distance(creature.getPosition()) > creature.getVisionRange());
         return creatures;
@@ -65,6 +60,7 @@ public abstract class EntityAI {
                         (c1, c2) -> Double.compare(
                                 c1.getPosition().distance(creature.getPosition()),
                                 c2.getPosition().distance(creature.getPosition())));
+
         food.removeIf(
                 c -> c.getPosition().distance(creature.getPosition()) > creature.getVisionRange());
         return food;

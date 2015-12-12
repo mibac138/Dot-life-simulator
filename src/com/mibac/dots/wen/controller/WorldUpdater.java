@@ -157,38 +157,32 @@ public class WorldUpdater {
     }
 
     private Creature createFetus(Creature father, Creature mother) {
-        double maxEnergy =
-                mutate(father.getMaxEnergy() + mother.getMaxEnergy(), 2, model.getMutationRate());
-        double maxAge = mutate(father.getMaxAge() + mother.getMaxAge(), 2, model.getMutationRate());
-        double speed = mutate(father.getSpeed() + mother.getSpeed(), 2, model.getMutationRate());
-        double visionRange = mutate(father.getVisionRange() + mother.getVisionRange(), 2,
-                model.getMutationRate());
+        double maxEnergy = mutate(father.getMaxEnergy() + mother.getMaxEnergy(), 2);
+        double maxAge = mutate(father.getMaxAge() + mother.getMaxAge(), 2);
+        double speed = mutate(father.getSpeed() + mother.getSpeed(), 2);
+        double visionRange = mutate(father.getVisionRange() + mother.getVisionRange(), 2);
         double matingEnergyNeeded =
-                mutate(father.getMatingEnergyNeeded() + mother.getMatingEnergyNeeded(), 2,
-                        model.getMutationRate());
-        double breedLength = mutate(father.getBreedLength() + mother.getBreedLength(), 2,
-                model.getMutationRate());
-        double breedSpeed =
-                mutate(father.getBreedSpeed() + mother.getBreedSpeed(), 2, model.getMutationRate());
-        double breedCooldown = mutate(father.getBreedCooldown() + mother.getBreedCooldown(), 2,
-                model.getMutationRate());
-        double breedFactor = mutate(father.getBreedFactor() + mother.getBreedFactor(), 2,
-                model.getMutationRate());
+                mutate(father.getMatingEnergyNeeded() + mother.getMatingEnergyNeeded(), 2);
+        double breedLength = mutate(father.getBreedLength() + mother.getBreedLength(), 2);
+        double breedSpeed = mutate(father.getBreedSpeed() + mother.getBreedSpeed(), 2);
+        double breedCooldown = mutate(father.getBreedCooldown() + mother.getBreedCooldown(), 2);
+        double breedFactor = mutate(father.getBreedFactor() + mother.getBreedFactor(), 2);
         Gender gender = Math.random() >= 0.5 ? Gender.MALE : Gender.FEMALE;
 
         return new Creature(null, null, gender, 0, maxAge, maxEnergy, maxEnergy, speed, visionRange,
                 matingEnergyNeeded, breedLength, breedSpeed, breedCooldown, breedFactor);
     }
 
-    private double mutate(double sum, int n, double mutationRate) {
-        return sum / n * generateMutationFactor(mutationRate);
+    private double mutate(double sum, int n) {
+        return sum / n * generateMutationFactor();
     }
 
-    private double generateMutationFactor(double mutationRate) {
-        if (Math.random() >= 0.5)
-            return 1 + mutationRate;
+    private double generateMutationFactor() {
+        double mR = model.getMutationRate();
+        if (Math.random() >= model.getGoodMutationChance())
+            return 1 + mR;
         else
-            return 1 - mutationRate;
+            return 1 - mR;
     }
 
     private void handleEating(Creature creature, double delta) {

@@ -84,8 +84,12 @@ public class WorldController {
         view.requestFocus();
     }
 
-    public void addCreature(Entity creature) {
-        model.addEntity(creature);
+    public void removeEntity(Entity e) {
+        model.removeEntity(e);
+    }
+
+    public void addEntity(Entity e) {
+        model.addEntity(e);
     }
 
     public Creature getCreature(Double position) {
@@ -118,5 +122,13 @@ public class WorldController {
 
     public int getMaxFoodAmount() {
         return model.getMaxFoodAmount();
+    }
+
+    public int getWorldWidth() {
+        return model.getWidth();
+    }
+
+    public int getWorldHeight() {
+        return model.getHeight();
     }
 }

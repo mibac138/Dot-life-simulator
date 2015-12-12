@@ -3,6 +3,14 @@
   <groupId>Dot-life-simulator</groupId>
   <artifactId>Dot-life-simulator</artifactId>
   <version>Sierra</version>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency> 
+  </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
