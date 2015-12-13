@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 after_success: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 before_deploy:
-  - export RELEASE_PKG_FILE=$(ls *.java)
+  - export RELEASE_PKG_FILE=$(ls *.jar)
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 deploy:
   provider: releases
