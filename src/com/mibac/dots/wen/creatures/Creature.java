@@ -230,4 +230,16 @@ public class Creature extends Entity {
 
         return n;
     }
+
+    @Override
+    public String toString() {
+        return "Creature [target=" + target + ", ai=" + ai + ", gender=" + gender + ", age=" + age
+                + ", maxAge=" + maxAge + ", energy=" + energy + ", maxEnergy=" + maxEnergy
+                + ", speed=" + speed + ", visionRange=" + visionRange + ", matingEnergyNeeded="
+                + matingEnergyNeeded + ", breedLength=" + breedLength + ", breedSpeed=" + breedSpeed
+                + ", breedTime=" + breedTime + ", breedCooldown=" + breedCooldown
+                + ", breedCooldownTime=" + breedCooldownTime + ", breedFactor=" + breedFactor
+                + ", fetuses=" + fetuses + ", pregnant=" + pregnant + ", position=" + position
+                + "]";
+    }
 }

@@ -310,7 +310,7 @@ public class MainWindow extends JFrame implements ChangeListener, ActionListener
             if (confirm == JOptionPane.YES_OPTION)
                 controller.removeEntity(creature);
         } else if (e.getSource() == entityClone)
-            new CreateCreatureView(creature, controller);
+            new CreateCreatureView(controller, creature);
     }
 
     @Override

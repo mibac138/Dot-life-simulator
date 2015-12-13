@@ -58,15 +58,9 @@ public class CreateCreatureView extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public CreateCreatureView(Creature creature, WorldController controller) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 300);
-        setLocationRelativeTo(null);
-        setTitle("Create Creature");
+    public CreateCreatureView(WorldController controller, Creature creature) {
+        this(controller);
 
-        this.controller = controller;
-
-        initUI();
         maxEnergyInput.setText(creature.getMaxEnergy() + "");
         maxAgeInput.setText(creature.getMaxAge() + "");
         positionXInput.setText(creature.getPosition().getX() + "");
@@ -79,10 +73,6 @@ public class CreateCreatureView extends JFrame implements ActionListener {
         breedCooldownInput.setText(creature.getBreedCooldown() + "");
         breedFactorInput.setText(creature.getBreedFactor() + "");
         genderComboBox.setSelectedIndex(creature.getGender() == Gender.MALE ? 0 : 1);
-
-        setResizable(true);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initUI() {
