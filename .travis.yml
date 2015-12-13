@@ -13,4 +13,4 @@ deploy:
   file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
-    repo: mibac138/Dot-life-simulator
+    tags: true
