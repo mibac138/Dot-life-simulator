@@ -15,8 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.junit.Assert;
-
 import com.mibac.dots.wen.ai.BetterAI;
 import com.mibac.dots.wen.controller.WorldController;
 import com.mibac.dots.wen.creatures.Creature;
@@ -197,20 +195,20 @@ public class CreateCreatureView extends JFrame implements ActionListener {
         }
 
         try {
-            Assert.assertTrue("Max Energy", maxEnergy >= 0);
-            Assert.assertTrue("Max Life", maxAge >= 0);
-            Assert.assertTrue("Position X", positionX >= 0);
-            Assert.assertTrue("Position Y", positionY >= 0);
-            Assert.assertTrue("Speed", speed >= 0);
-            Assert.assertTrue("Vision Range", visionRange >= 0);
-            Assert.assertTrue("Mating Energy Needed", matingEnergyNeeded >= 0);
-            Assert.assertTrue("Breed Length", breedLength >= 0);
-            Assert.assertTrue("Breed Progress Speed", breedProgressSpeed >= 0);
-            Assert.assertTrue("Breed Cooldown", breedCooldown >= 0);
-            Assert.assertTrue("Breed Factor", breedFactor >= 0);
+            assertTrue("Max Energy", maxEnergy >= 0);
+            assertTrue("Max Life", maxAge >= 0);
+            assertTrue("Position X", positionX >= 0);
+            assertTrue("Position Y", positionY >= 0);
+            assertTrue("Speed", speed >= 0);
+            assertTrue("Vision Range", visionRange >= 0);
+            assertTrue("Mating Energy Needed", matingEnergyNeeded >= 0);
+            assertTrue("Breed Length", breedLength >= 0);
+            assertTrue("Breed Progress Speed", breedProgressSpeed >= 0);
+            assertTrue("Breed Cooldown", breedCooldown >= 0);
+            assertTrue("Breed Factor", breedFactor >= 0);
 
-            Assert.assertTrue("Position X", positionX <= controller.getWorldWidth());
-            Assert.assertTrue("Position Y", positionY <= controller.getWorldHeight());
+            assertTrue("Position X", positionX <= controller.getWorldWidth());
+            assertTrue("Position Y", positionY <= controller.getWorldHeight());
         } catch (AssertionError e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Wrong input",
                     JOptionPane.WARNING_MESSAGE);
@@ -228,5 +226,10 @@ public class CreateCreatureView extends JFrame implements ActionListener {
                 breedProgressSpeed, breedCooldown, breedFactor));
 
         dispose();
+    }
+
+    private void assertTrue(String message, boolean bool) throws AssertionError {
+        if (!bool)
+            throw new AssertionError(message);
     }
 }
