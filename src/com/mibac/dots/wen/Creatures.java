@@ -5,28 +5,21 @@ import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D.Double;
 
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import com.mibac.dots.wen.controller.WorldController;
-import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.WorldBuilder;
 import com.mibac.dots.wen.creatures.WorldModel;
 import com.mibac.dots.wen.util.Logger;
 import com.mibac.dots.wen.view.MainWindow;
-import com.mibac.dots.wen.view.WorldInputListener;
-import com.mibac.dots.wen.view.WorldView;
+import com.mibac.dots.wen.view.Window;
 
 public class Creatures implements ActionListener {
     private static final int REFRESH_TIME = 15;
     private Timer timer;
-    private WorldModel model;
-    private WorldView view;
-    private WorldController controller;
-    private WorldInputListener listener;
-    private MainWindow window;
+    private MainWindow main;
     private double time;
 
     public static void main(String[] args) {
@@ -45,21 +38,16 @@ public class Creatures implements ActionListener {
             timer.stop();
 
         new Logger();
-        model = new WorldBuilder(800, 600).generateRandomWorld(20, 50).setMaxSpeedFactor(25)
+        WorldModel a = new WorldBuilder(800, 600).generateRandomWorld(20, 50).setMaxSpeedFactor(25)
                 .build();
-        view = new WorldView(model);
-        controller = new WorldController(model, view);
-        listener = new WorldInputListener(controller);
+        WorldModel b = new WorldBuilder(1000, 1000).generateRandomWorld(10, 5000)
+                .setMaxFoodAmount(10000).setMaxSpeedFactor(100).build();
+
         // statistics = new Statistics(worldModel);
 
-        view.addKeyListener(listener);
-        view.addMouseListener(listener);
-        view.addMouseWheelListener(listener);
-
-        window = new MainWindow(controller, view);
-
-        controller.setMainWindow(window);
-        controller.addEntity(new Creature(new Double(900d, 700d)));
+        main = new MainWindow();
+        main.addWindow(new Window(new WorldController(a)));
+        main.addWindow(new Window(new WorldController(b)));
 
         timer = new Timer(REFRESH_TIME, this);
         timer.start();
@@ -69,24 +57,11 @@ public class Creatures implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         double currentTime = System.nanoTime();
-        double delta = (System.nanoTime() - time) / 1E9;
+        double delta = (currentTime - time) / 1e9;
         time = currentTime;
 
         log("! DELTA ! " + delta, PRINT_OTHER);
 
-        listener.handleKeys();
-        listener.handleMouse(view);
-
-        view.repaint();
-
-        if (model.getSpeedFactor() > 0) {
-            for (Creature c : model.getCreatures())
-                c.update();
-
-            window.update(delta);
-            controller.update(delta);
-            // statistics.update(delta);
-        }
+        main.update(delta);
     }
-
 }

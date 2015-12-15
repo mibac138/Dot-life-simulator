@@ -29,6 +29,7 @@ public class WorldUpdater {
         delta *= model.getSpeedFactor();
         for (Iterator<Creature> i = model.getCreatures().iterator(); i.hasNext();) {
             Creature creature = i.next();
+            creature.update();
             boolean a = true;
             handleMoving(creature, delta);
             handleMating(creature, delta);

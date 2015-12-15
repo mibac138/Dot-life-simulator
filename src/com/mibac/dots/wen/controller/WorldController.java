@@ -9,19 +9,34 @@ import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Entity;
 import com.mibac.dots.wen.creatures.Food;
 import com.mibac.dots.wen.creatures.WorldModel;
-import com.mibac.dots.wen.view.MainWindow;
+import com.mibac.dots.wen.view.Window;
+import com.mibac.dots.wen.view.WorldInputListener;
 import com.mibac.dots.wen.view.WorldView;
 
 public class WorldController {
     private WorldModel model;
+    private WorldInputListener in;
     private WorldView view;
     private WorldUpdater updater;
-    private MainWindow window;
+    private Window window;
 
-    public WorldController(WorldModel model, WorldView view) {
+    public WorldController(WorldModel model, WorldInputListener in, WorldView view) {
+        init(model, in, view, new WorldUpdater(model));
+    }
+
+    public WorldController(WorldModel model) {
+        init(model, new WorldInputListener(this), new WorldView(model), new WorldUpdater(model));
+    }
+
+    private void init(WorldModel model, WorldInputListener in, WorldView view,
+            WorldUpdater updater) {
         this.model = model;
+        this.in = in;
         this.view = view;
-        this.updater = new WorldUpdater(model);
+        this.view.addKeyListener(in);
+        this.view.addMouseListener(in);
+        this.view.addMouseWheelListener(in);
+        this.updater = updater;
     }
 
     public Vector<Creature> getCreatures() {
@@ -33,8 +48,12 @@ public class WorldController {
     }
 
     public void update(double delta) {
-        updater.update(delta * model.getSpeedFactor());
-        window.displayEntity(model.getSelectedCreature());
+        if (model.getSpeedFactor() > 0) {
+            updater.update(delta * model.getSpeedFactor());
+            window.displayEntity(model.getSelectedCreature());
+            view.repaint();
+            handleInput();
+        }
     }
 
     public void setSelectedCreature(Creature c) {
@@ -112,7 +131,7 @@ public class WorldController {
         view.setOffsetY(view.getOffsetY() + change);
     }
 
-    public void setMainWindow(MainWindow window) {
+    public void setWindow(Window window) {
         this.window = window;
     }
 
@@ -130,5 +149,14 @@ public class WorldController {
 
     public int getWorldHeight() {
         return model.getHeight();
+    }
+
+    public void handleInput() {
+        in.handleKeys();
+        in.handleMouse(view);
+    }
+
+    public WorldView getView() {
+        return view;
     }
 }
