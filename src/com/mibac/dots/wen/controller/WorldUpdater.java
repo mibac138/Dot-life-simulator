@@ -1,9 +1,10 @@
 package com.mibac.dots.wen.controller;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_BREED;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_DEATH;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_ENERGY;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_MOVE;
+
+import static com.mibac.dots.wen.util.Debug.PRINT_BREED;
+import static com.mibac.dots.wen.util.Debug.PRINT_DEATH;
+import static com.mibac.dots.wen.util.Debug.PRINT_ENERGY;
+import static com.mibac.dots.wen.util.Debug.PRINT_MOVE;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.geom.Point2D.Double;

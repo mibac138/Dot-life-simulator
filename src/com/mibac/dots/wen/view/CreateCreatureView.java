@@ -42,7 +42,7 @@ public class CreateCreatureView extends JFrame implements ActionListener {
 
     // TODO Default values (Save if changed)
     public CreateCreatureView(WorldController controller) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(300, 300);
         setLocationRelativeTo(null);
         setTitle("Create Creature");
@@ -53,7 +53,6 @@ public class CreateCreatureView extends JFrame implements ActionListener {
 
         setResizable(true);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public CreateCreatureView(WorldController controller, Creature creature) {
@@ -224,7 +223,6 @@ public class CreateCreatureView extends JFrame implements ActionListener {
         controller.addEntity(new Creature(new Double(positionX, positionY), new BetterAI(), gnd, 0,
                 maxAge, maxEnergy, maxEnergy, speed, visionRange, matingEnergyNeeded, breedLength,
                 breedProgressSpeed, breedCooldown, breedFactor));
-
         dispose();
     }
 

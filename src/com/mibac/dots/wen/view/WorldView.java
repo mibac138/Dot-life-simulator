@@ -1,9 +1,10 @@
 package com.mibac.dots.wen.view;
 
-import static com.mibac.dots.wen.util.Debug.Type.DRAW;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_BORDER;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_PATH;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_VISION;
+
+import static com.mibac.dots.wen.util.Debug.DRAW;
+import static com.mibac.dots.wen.util.Debug.DRAW_BORDER;
+import static com.mibac.dots.wen.util.Debug.DRAW_PATH;
+import static com.mibac.dots.wen.util.Debug.DRAW_VISION;
 
 import java.awt.Color;
 import java.awt.Graphics;

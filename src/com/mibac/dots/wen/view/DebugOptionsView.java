@@ -1,19 +1,19 @@
 package com.mibac.dots.wen.view;
 
-import static com.mibac.dots.wen.util.Debug.Type.CMDS;
-import static com.mibac.dots.wen.util.Debug.Type.DEBUG;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_BORDER;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_PATH;
-import static com.mibac.dots.wen.util.Debug.Type.DRAW_VISION;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_AI;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_BREED;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_DEATH;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_ENERGY;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_INPUT;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_MOVE;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+import static com.mibac.dots.wen.util.Debug.CMDS;
+import static com.mibac.dots.wen.util.Debug.DEBUG;
+import static com.mibac.dots.wen.util.Debug.DRAW;
+import static com.mibac.dots.wen.util.Debug.DRAW_BORDER;
+import static com.mibac.dots.wen.util.Debug.DRAW_PATH;
+import static com.mibac.dots.wen.util.Debug.DRAW_VISION;
+import static com.mibac.dots.wen.util.Debug.PRINT;
+import static com.mibac.dots.wen.util.Debug.PRINT_AI;
+import static com.mibac.dots.wen.util.Debug.PRINT_BREED;
+import static com.mibac.dots.wen.util.Debug.PRINT_DEATH;
+import static com.mibac.dots.wen.util.Debug.PRINT_ENERGY;
+import static com.mibac.dots.wen.util.Debug.PRINT_INPUT;
+import static com.mibac.dots.wen.util.Debug.PRINT_MOVE;
+import static com.mibac.dots.wen.util.Debug.PRINT_OTHER;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

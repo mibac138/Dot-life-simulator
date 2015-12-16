@@ -14,6 +14,7 @@ import com.mibac.dots.wen.view.WorldInputListener;
 import com.mibac.dots.wen.view.WorldView;
 
 public class WorldController {
+    public static int MAX_SPEED_FACTOR = 10;
     private WorldModel model;
     private WorldInputListener in;
     private WorldView view;
@@ -48,11 +49,15 @@ public class WorldController {
     }
 
     public void update(double delta) {
+        JSlider slider = window.getSpeedSlider();
+        slider.setMaximum(WorldController.MAX_SPEED_FACTOR);
+        window.setSpeedSlider(slider);
+        handleInput();
+
         if (model.getSpeedFactor() > 0) {
             updater.update(delta * model.getSpeedFactor());
             window.displayEntity(model.getSelectedCreature());
             view.repaint();
-            handleInput();
         }
     }
 
@@ -74,14 +79,11 @@ public class WorldController {
     }
 
     public int getMaxSpeedFactor() {
-        return model.getMaxSpeedFactor();
+        return WorldController.MAX_SPEED_FACTOR;
     }
 
     public void setMaxSpeedFactor(int maxSpeedFactor) {
-        model.setMaxSpeedFactor(maxSpeedFactor);
-        JSlider speed = window.getSpeedSlider();
-        speed.setMaximum(model.getMaxSpeedFactor());
-        window.setSpeedSlider(speed);
+        WorldController.MAX_SPEED_FACTOR = maxSpeedFactor;
     }
 
     public void setSpeedFactor(int speedFactor) {

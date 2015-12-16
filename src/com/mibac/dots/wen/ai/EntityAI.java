@@ -1,6 +1,7 @@
 package com.mibac.dots.wen.ai;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_AI;
+
+import static com.mibac.dots.wen.util.Debug.PRINT_AI;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.util.Collections;

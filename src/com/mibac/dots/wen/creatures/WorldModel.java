@@ -1,8 +1,10 @@
 package com.mibac.dots.wen.creatures;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+
+import static com.mibac.dots.wen.util.Debug.PRINT_OTHER;
 import static com.mibac.dots.wen.util.Logger.log;
 
+import java.awt.geom.Point2D.Double;
 import java.util.Vector;
 
 public class WorldModel {
@@ -13,13 +15,12 @@ public class WorldModel {
     private int width, height;
     private int selectedCreature;
     private int speedFactor;
-    private int maxSpeedFactor;
     private int maxFoodAmount;
     private short foodCreationRatio;
 
     WorldModel(Vector<Creature> creatures, Vector<Food> food, double goodMutationChance,
-            double mutationRate, int width, int height, int speedFactor, int maxSpeedFactor,
-            int maxFoodAmount, short foodCreationRatio) {
+            double mutationRate, int width, int height, int speedFactor, int maxFoodAmount,
+            short foodCreationRatio) {
         this.creatures = new Vector<>();
         this.food = new Vector<>();
         this.goodMutationChance = goodMutationChance;
@@ -28,7 +29,6 @@ public class WorldModel {
         this.height = height;
         this.selectedCreature = -1;
         this.speedFactor = speedFactor;
-        this.maxSpeedFactor = maxSpeedFactor;
         this.maxFoodAmount = maxFoodAmount;
         this.foodCreationRatio = foodCreationRatio;
 
@@ -66,14 +66,6 @@ public class WorldModel {
 
     public void setFoodCreationRatio(short foodCreationRatio) {
         this.foodCreationRatio = foodCreationRatio;
-    }
-
-    public void setMaxSpeedFactor(int maxSpeedFactor) {
-        this.maxSpeedFactor = maxSpeedFactor;
-    }
-
-    public int getMaxSpeedFactor() {
-        return maxSpeedFactor;
     }
 
     public int getSelectedCreatureIndex() {
@@ -164,5 +156,79 @@ public class WorldModel {
             entity.getPosition().y = height;
 
         return entity;
+    }
+
+    public static class Builder {
+        private Vector<Creature> creatures;
+        private Vector<Food> food;
+        private double goodMutationChance;
+        private double mutationRate;
+        private int width, height;
+        private int speedFactor;
+        private int maxFoodAmount;
+        private short foodCreationRatio;
+
+        public Builder(int width, int height) {
+            this.creatures = new Vector<>();
+            this.food = new Vector<>();
+            this.goodMutationChance = 0.6;
+            this.mutationRate = 0.1;
+            this.width = width;
+            this.height = height;
+            this.speedFactor = 1;
+            this.foodCreationRatio = 50;
+            this.maxFoodAmount = 500;
+        }
+
+        public Builder addCreature(Creature creature) {
+            creatures.add(creature);
+            return this;
+        }
+
+        public Builder addFood(Food food) {
+            this.food.add(food);
+            return this;
+        }
+
+        public Builder generateRandomWorld(int creatureAmount, int foodAmount) {
+            for (int i = 0; i < creatureAmount; i++)
+                creatures.add(
+                        new Creature(new Double(Math.random() * width, Math.random() * height)));
+
+            for (int i = 0; i < foodAmount; i++)
+                food.add(new Food(new Double(Math.random() * width, Math.random() * height), 1));
+
+            return this;
+        }
+
+        public Builder setSpeedFactor(int speedFactor) {
+            this.speedFactor = speedFactor;
+            return this;
+        }
+
+        public Builder setFoodCreationRatio(short foodCreationRatio) {
+            this.foodCreationRatio = foodCreationRatio;
+            return this;
+        }
+
+        public Builder setMaxFoodAmount(int maxFoodAmount) {
+            this.maxFoodAmount = maxFoodAmount;
+            return this;
+        }
+
+        public Builder setMutationRate(double mutationRate) {
+            this.mutationRate = mutationRate;
+            return this;
+        }
+
+        public Builder setGoodMutationChance(double goodMutationChance) {
+            this.goodMutationChance = goodMutationChance;
+            return this;
+        }
+
+        public WorldModel build() {
+            return new WorldModel(creatures, food, goodMutationChance, mutationRate, width, height,
+                    speedFactor, maxFoodAmount, foodCreationRatio);
+        }
     }
 }

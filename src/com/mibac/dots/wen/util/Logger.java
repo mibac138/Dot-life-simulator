@@ -1,15 +1,15 @@
 package com.mibac.dots.wen.util;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_AI;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_BREED;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_DEATH;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_ENERGY;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_INPUT;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_MOVE;
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+import static com.mibac.dots.wen.util.Debug.PRINT_AI;
+import static com.mibac.dots.wen.util.Debug.PRINT_BREED;
+import static com.mibac.dots.wen.util.Debug.PRINT_DEATH;
+import static com.mibac.dots.wen.util.Debug.PRINT_ENERGY;
+import static com.mibac.dots.wen.util.Debug.PRINT_INPUT;
+import static com.mibac.dots.wen.util.Debug.PRINT_MOVE;
+import static com.mibac.dots.wen.util.Debug.PRINT_OTHER;
 
 public class Logger {
-    public static void log(String message, Debug.Type type) {
+    public static void log(String message, Debug type) {
         if (type.isEnabled())
             if (type == PRINT_ENERGY)
                 System.out.println("ENERGY " + message);

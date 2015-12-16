@@ -228,6 +228,7 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
 
     public void update(double delta) {
         textLabel.setText("Creatures: " + controller.getCreatures().size());
+        speedSlider.setMaximum(controller.getMaxSpeedFactor());
         controller.update(delta);
     }
 

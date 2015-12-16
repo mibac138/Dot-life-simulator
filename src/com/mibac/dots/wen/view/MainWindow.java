@@ -1,6 +1,8 @@
 package com.mibac.dots.wen.view;
 
 
+import static com.mibac.dots.wen.util.Debug.DEBUG;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,6 +29,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuItem showStatisticsItem;
 
     private JMenu helpMenu;
+    private JMenuItem optionsItem;
     private JMenuItem debugOptionsItem;
 
     private JTabbedPane tabbedPane;
@@ -73,9 +76,13 @@ public class MainWindow extends JFrame implements ActionListener {
         statisticsMenu.add(showStatisticsItem);
 
         helpMenu = new JMenu("Help");
-        debugOptionsItem = new JMenuItem("Open debug options");
+        optionsItem = new JMenuItem("Options");
+        optionsItem.addActionListener(this);
+        debugOptionsItem = new JMenuItem("Debug options");
         debugOptionsItem.addActionListener(this);
-        helpMenu.add(debugOptionsItem);
+        helpMenu.add(optionsItem);
+        if (DEBUG.isEnabled())
+            helpMenu.add(debugOptionsItem);
 
         menuBar.add(fileMenu);
         menuBar.add(worldMenu);
@@ -93,8 +100,12 @@ public class MainWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == closeItem)
             System.exit(0);
+        else if (e.getSource() == createWorldItem)
+            new CreateWorldView();
         else if (e.getSource() == createCreatureItem)
             new CreateCreatureView(getWindow(tabbedPane.getSelectedIndex()).getController());
+        else if (e.getSource() == optionsItem)
+            new OptionsView();
         else if (e.getSource() == debugOptionsItem)
             new DebugOptionsView();
     }

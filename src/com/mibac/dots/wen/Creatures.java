@@ -1,6 +1,7 @@
 package com.mibac.dots.wen;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_OTHER;
+
+import static com.mibac.dots.wen.util.Debug.PRINT_OTHER;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.event.ActionEvent;
@@ -10,9 +11,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import com.mibac.dots.wen.controller.WorldController;
-import com.mibac.dots.wen.creatures.WorldBuilder;
 import com.mibac.dots.wen.creatures.WorldModel;
-import com.mibac.dots.wen.util.Logger;
 import com.mibac.dots.wen.view.MainWindow;
 import com.mibac.dots.wen.view.Window;
 
@@ -27,21 +26,16 @@ public class Creatures implements ActionListener {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(0);
+            return;
         }
 
         new Creatures();
     }
 
     public Creatures() {
-        if (timer != null && timer.isRunning())
-            timer.stop();
-
-        new Logger();
-        WorldModel a = new WorldBuilder(800, 600).generateRandomWorld(20, 50).setMaxSpeedFactor(25)
-                .build();
-        WorldModel b = new WorldBuilder(1000, 1000).generateRandomWorld(10, 5000)
-                .setMaxFoodAmount(10000).setMaxSpeedFactor(100).build();
+        WorldModel a = new WorldModel.Builder(800, 600).generateRandomWorld(20, 50).build();
+        WorldModel b = new WorldModel.Builder(1000, 1000).generateRandomWorld(10, 5000)
+                .setMaxFoodAmount(10000).build();
 
         // statistics = new Statistics(worldModel);
 

@@ -1,6 +1,7 @@
 package com.mibac.dots.wen.view;
 
-import static com.mibac.dots.wen.util.Debug.Type.PRINT_INPUT;
+
+import static com.mibac.dots.wen.util.Debug.PRINT_INPUT;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.MouseInfo;
