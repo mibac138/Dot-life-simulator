@@ -78,7 +78,7 @@ public class WorldUpdater {
         for (int i = 0; i < model.getSpeedFactor(); i++)
             if (model.getFood().size() >= model.getMaxFoodAmount())
                 break;
-            else if (Math.random() * 100 > model.getFoodCreationRatio())
+            else if (Math.random() * 100 < model.getFoodCreationRatio())
                 model.addFood(new Food(new Double(model.getWidth() * Math.random(),
                         model.getHeight() * Math.random()), 100 * Math.random()));
     }

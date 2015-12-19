@@ -168,7 +168,7 @@ public class MainWindow extends JFrame implements ActionListener {
         } else if (e.getSource() == closeItem)
             System.exit(0);
         else if (e.getSource() == createWorldItem)
-            new CreateWorldView();
+            new CreateWorldView(this);
         else if (e.getSource() == createCreatureItem)
             new CreateCreatureView(getWindow(tabbedPane.getSelectedIndex()).getController());
         else if (e.getSource() == optionsItem)
