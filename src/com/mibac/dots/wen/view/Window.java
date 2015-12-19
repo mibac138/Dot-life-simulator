@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -192,6 +193,10 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
 
     public void setViewInputFocus() {
         controller.setViewInputFocus();
+    }
+
+    public void saveWorld(File directory) {
+        controller.saveWorld(directory);
     }
 
     public void displayEntity(Creature c) {

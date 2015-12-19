@@ -8,13 +8,14 @@ import com.mibac.dots.wen.ai.BetterAI;
 import com.mibac.dots.wen.ai.EntityAI;
 
 public class Creature extends Entity {
+    private static final long serialVersionUID = 1L;
     public static final int MAX_FETUSES = 8;
 
     public enum Gender {
         MALE, FEMALE
     };
 
-    private Double target;
+    private transient Double target;
     private EntityAI ai;
     private Gender gender;
 

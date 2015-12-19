@@ -1,6 +1,7 @@
 package com.mibac.dots.wen.controller;
 
 import java.awt.geom.Point2D.Double;
+import java.io.File;
 import java.util.Vector;
 
 import javax.swing.JSlider;
@@ -160,5 +161,9 @@ public class WorldController {
 
     public WorldView getView() {
         return view;
+    }
+
+    public void saveWorld(File directory) {
+        model.save(directory);
     }
 }

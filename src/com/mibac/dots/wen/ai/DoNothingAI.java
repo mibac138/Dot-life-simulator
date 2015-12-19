@@ -6,6 +6,7 @@ import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Food;
 
 public class DoNothingAI extends EntityAI {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void init() {}

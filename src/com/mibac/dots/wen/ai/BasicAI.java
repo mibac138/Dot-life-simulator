@@ -10,6 +10,7 @@ import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Food;
 
 public class BasicAI extends EntityAI {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void init() {}

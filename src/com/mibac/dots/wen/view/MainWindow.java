@@ -5,18 +5,28 @@ import static com.mibac.dots.wen.util.Debug.DEBUG;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.InvalidClassException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.filechooser.FileFilter;
+
+import com.mibac.dots.wen.controller.WorldController;
+import com.mibac.dots.wen.creatures.WorldModel;
 
 public class MainWindow extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     private JMenuBar menuBar;
     private JMenu fileMenu;
+    private JMenuItem loadWorldItem;
+    private JMenuItem saveWorldItem;
     private JMenuItem exportStatisticsItem;
     private JMenuItem closeItem;
 
@@ -52,9 +62,16 @@ public class MainWindow extends JFrame implements ActionListener {
         fileMenu = new JMenu("File");
         exportStatisticsItem = new JMenuItem("Export Statistics");
         exportStatisticsItem.addActionListener(this);
+        loadWorldItem = new JMenuItem("Load world");
+        loadWorldItem.addActionListener(this);
+        saveWorldItem = new JMenuItem("Save world");
+        saveWorldItem.addActionListener(this);
         closeItem = new JMenuItem("Close");
         closeItem.addActionListener(this);
+
         fileMenu.add(exportStatisticsItem);
+        fileMenu.add(loadWorldItem);
+        fileMenu.add(saveWorldItem);
         fileMenu.addSeparator();
         fileMenu.add(closeItem);
 
@@ -98,7 +115,57 @@ public class MainWindow extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == closeItem)
+        if (e.getSource() == saveWorldItem) {
+            File dir = askForDirectory("Select directory where the world you want to be saved");
+
+            if (dir == null || dir.getAbsolutePath().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Directory you choosed is incorrect",
+                        "Bad directory", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ((Window) tabbedPane.getSelectedComponent()).saveWorld(dir);
+        } else if (e.getSource() == loadWorldItem) {
+            File dir =
+                    askForDirectory("Select directory where the world you want to load is located");
+
+            if (dir == null || dir.getAbsolutePath().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Directory you choosed is incorrect",
+                        "Bad directory", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            WorldModel model = null;
+
+            try {
+                model = WorldModel.load(dir);
+            } catch (InvalidClassException ex) {
+                String msg = ex.getMessage();
+                String s = msg.substring(msg.lastIndexOf('.') + 1);
+                s = s.substring(0, s.indexOf(';'));
+                JOptionPane.showMessageDialog(this, "Incompatible class (" + s + ")", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Error occured while loading world (" + ex.getMessage() + ")", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (model == null) {
+                JOptionPane.showMessageDialog(this, "Unknown error occured while loading world",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            model.setPath(dir);
+
+            String name = dir.getName();
+            name = name.substring(0, name.lastIndexOf("."));
+
+            addWindow(new Window(new WorldController(model)), name);
+        } else if (e.getSource() == closeItem)
             System.exit(0);
         else if (e.getSource() == createWorldItem)
             new CreateWorldView();
@@ -130,5 +197,46 @@ public class MainWindow extends JFrame implements ActionListener {
         for (int i = 0; i < tabbedPane.getComponentCount(); i++)
             if (tabbedPane.getComponentAt(i) instanceof Window)
                 ((Window) tabbedPane.getComponentAt(i)).update(delta);
+    }
+
+    private File askForDirectory(String text, File dir) {
+        JFileChooser chooser = new JFileChooser();
+        if (dir != null)
+            chooser.setCurrentDirectory(dir);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setFileFilter(new FileFilter() {
+
+            @Override
+            public String getDescription() {
+                return "DWorld files";
+            }
+
+            @Override
+            public boolean accept(File f) {
+                return getExtension(f + "").equalsIgnoreCase("dw");
+            }
+        });
+        int option = chooser.showSaveDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION)
+            return chooser.getSelectedFile();
+        else
+            return null;
+    }
+
+    private File askForDirectory(String text) {
+        return askForDirectory(text, null);
+    }
+
+    private String getExtension(String fileName) {
+        String extension = "";
+
+        int i = fileName.lastIndexOf('.');
+        int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+
+        if (i > p)
+            extension = fileName.substring(i + 1);
+
+        return extension;
     }
 }

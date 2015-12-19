@@ -5,9 +5,22 @@ import static com.mibac.dots.wen.util.Debug.PRINT_OTHER;
 import static com.mibac.dots.wen.util.Logger.log;
 
 import java.awt.geom.Point2D.Double;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Vector;
 
-public class WorldModel {
+public class WorldModel implements Serializable {
+    public static final String EXTENSION = ".dw";
+    private transient File path;
+    private static final long serialVersionUID = 1L;
     private Vector<Creature> creatures;
     private Vector<Food> food;
     private double goodMutationChance;
@@ -34,6 +47,14 @@ public class WorldModel {
 
         creatures.stream().forEach(c -> addCreature(c));
         food.stream().forEach(f -> addFood(f));
+    }
+
+    public File getPath() {
+        return path;
+    }
+
+    public void setPath(File path) {
+        this.path = path;
     }
 
     public double getGoodMutationChance() {
@@ -147,6 +168,39 @@ public class WorldModel {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void save(File directory) {
+        try {
+            if (!directory.getAbsolutePath().endsWith(EXTENSION))
+                directory = new File(directory.getAbsoluteFile() + EXTENSION);
+            if (!directory.exists())
+                directory.createNewFile();
+
+            FileOutputStream fos = new FileOutputStream(directory);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(this);
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static WorldModel load(File directory)
+            throws IOException, ClassNotFoundException, InvalidClassException {
+        if (!directory.getAbsolutePath().endsWith(EXTENSION))
+            directory = new File(directory.getAbsolutePath() + EXTENSION);
+
+        FileInputStream fis = new FileInputStream(directory);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        WorldModel model = (WorldModel) ois.readObject();
+        ois.close();
+
+        model.getCreatures().forEach(c -> c.getAI().setWorldModel(model).setCreature(c));
+
+        return model;
     }
 
     private Entity fixPosition(Entity entity) {

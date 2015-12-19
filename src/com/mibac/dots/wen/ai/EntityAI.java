@@ -4,6 +4,7 @@ package com.mibac.dots.wen.ai;
 import static com.mibac.dots.wen.util.Debug.PRINT_AI;
 import static com.mibac.dots.wen.util.Logger.log;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -11,10 +12,11 @@ import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Food;
 import com.mibac.dots.wen.creatures.WorldModel;
 
-public abstract class EntityAI {
-    protected Creature creature;
-    private WorldModel world;
-    private long time;
+public abstract class EntityAI implements Serializable {
+    private static final long serialVersionUID = 1L;
+    protected transient Creature creature;
+    private transient WorldModel world;
+    private transient long time;
 
     public final void update() {
         Vector<Creature> creatures = null;

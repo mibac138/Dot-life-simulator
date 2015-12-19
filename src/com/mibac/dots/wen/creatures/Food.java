@@ -3,6 +3,7 @@ package com.mibac.dots.wen.creatures;
 import java.awt.geom.Point2D;
 
 public class Food extends Entity {
+    private static final long serialVersionUID = 1L;
     private double value;
 
     public Food(Point2D.Double position, double value) {
