@@ -14,11 +14,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 import javax.swing.filechooser.FileFilter;
 
 import com.mibac.dots.wen.controller.WorldController;
 import com.mibac.dots.wen.creatures.WorldModel;
+import com.mibac.dots.wen.util.JCloseableTabbedPane;
 
 public class MainWindow extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
@@ -42,7 +42,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuItem optionsItem;
     private JMenuItem debugOptionsItem;
 
-    private JTabbedPane tabbedPane;
+    private JCloseableTabbedPane tabbedPane;
 
     public MainWindow() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,7 +108,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         setJMenuBar(menuBar);
 
-        tabbedPane = new JTabbedPane();
+        tabbedPane = new JCloseableTabbedPane();
 
         add(tabbedPane);
     }
@@ -194,7 +194,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     public void update(double delta) {
-        for (int i = 0; i < tabbedPane.getComponentCount(); i++)
+        for (int i = 0; i < tabbedPane.getComponentCount() - 1; i++)
             if (tabbedPane.getComponentAt(i) instanceof Window)
                 ((Window) tabbedPane.getComponentAt(i)).update(delta);
     }
