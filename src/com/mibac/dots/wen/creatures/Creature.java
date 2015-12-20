@@ -1,8 +1,8 @@
 package com.mibac.dots.wen.creatures;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.mibac.dots.wen.ai.BetterAI;
 import com.mibac.dots.wen.ai.EntityAI;
@@ -18,6 +18,7 @@ public class Creature extends Entity {
     private transient Double target;
     private EntityAI ai;
     private Gender gender;
+    private HashMap<Creature, java.lang.Double> relations;
 
     private double age;
     private double maxAge;
@@ -66,17 +67,26 @@ public class Creature extends Entity {
         this.pregnant = false;
 
         this.target = null;
+        this.relations = new HashMap<>();
     }
 
     public void update() {
         ai.update();
     }
 
-    public Point2D.Double getTarget() {
+    public HashMap<Creature, java.lang.Double> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(HashMap<Creature, java.lang.Double> relations) {
+        this.relations = relations;
+    }
+
+    public Double getTarget() {
         return target;
     }
 
-    public void setTarget(Point2D.Double target) {
+    public void setTarget(Double target) {
         this.target = target;
     }
 
@@ -145,11 +155,9 @@ public class Creature extends Entity {
 
     }
 
-
     public double getMatingEnergyNeeded() {
         return matingEnergyNeeded;
     }
-
 
     public void setMatingEnergyNeeded(double matingEnergyNeeded) {
         this.matingEnergyNeeded = matingEnergyNeeded;

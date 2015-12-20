@@ -33,8 +33,9 @@ public class JCloseableTabbedPane extends JTabbedPane {
         addTab(title, null, component);
     }
 
-    public class CloseButtonTab extends JPanel {
+    public class CloseButtonTab extends JPanel implements MouseListener {
         private static final long serialVersionUID = 1L;
+        private Component tab;
 
         public CloseButtonTab(Component tab, String title, Icon icon) {
             setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
@@ -42,19 +43,13 @@ public class JCloseableTabbedPane extends JTabbedPane {
             label.setIcon(icon);
             add(label);
 
+            this.tab = tab;
+
             // TODO some nicer icon
             JButton button = new JButton(MetalIconFactory.getInternalFrameCloseIcon(14));
             button.setMargin(new Insets(0, 0, 0, 0));
-            button.addMouseListener(new CloseListener(tab));
+            button.addMouseListener(this);
             add(button);
-        }
-    }
-
-    public class CloseListener implements MouseListener {
-        private Component tab;
-
-        public CloseListener(Component tab) {
-            this.tab = tab;
         }
 
         @Override
