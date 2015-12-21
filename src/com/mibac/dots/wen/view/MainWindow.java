@@ -42,13 +42,18 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuItem optionsItem;
     private JMenuItem debugOptionsItem;
 
+    private JMenuItem toggleDrawingItem;
+
     private JCloseableTabbedPane tabbedPane;
+
+    private boolean drawWorld;
 
     public MainWindow() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1366, 768);
         setLocationRelativeTo(null);
         setTitle("Experimental version of Dots [formerly Sierra beta]");
+        drawWorld = true;
 
         initUI();
 
@@ -101,10 +106,14 @@ public class MainWindow extends JFrame implements ActionListener {
         if (DEBUG.isEnabled())
             helpMenu.add(debugOptionsItem);
 
+        toggleDrawingItem = new JMenuItem("Toggle drawing (on)");
+        toggleDrawingItem.addActionListener(this);
+
         menuBar.add(fileMenu);
         menuBar.add(worldMenu);
         menuBar.add(statisticsMenu);
         menuBar.add(helpMenu);
+        menuBar.add(toggleDrawingItem);
 
         setJMenuBar(menuBar);
 
@@ -175,6 +184,10 @@ public class MainWindow extends JFrame implements ActionListener {
             new OptionsView();
         else if (e.getSource() == debugOptionsItem)
             new DebugOptionsView();
+        else if (e.getSource() == toggleDrawingItem) {
+            drawWorld = !drawWorld;
+            toggleDrawingItem.setText("Toggle drawing (" + (drawWorld ? "on" : "off") + ")");
+        }
     }
 
     public int getWindowIndex(Window w) {
@@ -196,7 +209,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public void update(double delta) {
         for (int i = 0; i < tabbedPane.getComponentCount() - 1; i++)
             if (tabbedPane.getComponentAt(i) instanceof Window)
-                ((Window) tabbedPane.getComponentAt(i)).update(delta);
+                ((Window) tabbedPane.getComponentAt(i)).update(delta, drawWorld);
     }
 
     private File askForDirectory(String text, File dir) {

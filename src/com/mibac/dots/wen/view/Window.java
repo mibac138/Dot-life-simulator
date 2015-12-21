@@ -16,12 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.eclipse.wb.swing.FocusTraversalOnArray;
+import javax.swing.table.DefaultTableModel;
 
 import com.mibac.dots.wen.controller.WorldController;
 import com.mibac.dots.wen.creatures.Creature;
@@ -39,24 +39,8 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
     private JSlider speedSlider;
 
     private Creature creature;
-    private JPanel entityInfo;
-    private JLabel entityInfoToString;
-    private JLabel entityPosition;
-    private JLabel entityAge;
-    private JLabel entityMaxAge;
-    private JLabel entityEnergy;
-    private JLabel entityMaxEnergy;
-    private JLabel entitySpeed;
-    private JLabel entityVisionRange;
-    private JLabel entityMatingEnergyNeeded;
-    private JLabel entityBreedLength;
-    private JLabel entityBreedSpeed;
-    private JLabel entityBreedTime;
-    private JLabel entityPregnant;
-    private JLabel entityAI;
-    private JLabel entityBreedCooldown;
-    private JLabel entityBreedCooldownTime;
-    private JLabel entityBreedFactor;
+    private JPanel entityPanel;
+    private JTable entityInfoTable;
     private JButton entityKill;
     private JButton entityClone;
 
@@ -100,81 +84,46 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
         maxFoodContainer.add(maxFoodLabel);
         maxFoodContainer.add(maxFoodSpinner);
 
-        entityInfo = new JPanel();
-        entityInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        entityPanel = new JPanel(new BorderLayout());
 
-        entityInfoToString = new JLabel();
-        entityInfoToString.setBounds(5, 5, 250, 15);
-        entityPosition = new JLabel();
-        entityPosition.setBounds(5, 25, 250, 15);
-        entityAge = new JLabel();
-        entityAge.setBounds(5, 45, 250, 15);
-        entityMaxAge = new JLabel();
-        entityMaxAge.setBounds(5, 65, 250, 15);
-        entityEnergy = new JLabel();
-        entityEnergy.setBounds(5, 85, 250, 15);
-        entityMaxEnergy = new JLabel();
-        entityMaxEnergy.setBounds(5, 105, 250, 15);
-        entitySpeed = new JLabel();
-        entitySpeed.setBounds(5, 125, 250, 15);
-        entityVisionRange = new JLabel();
-        entityVisionRange.setBounds(5, 145, 250, 15);
-        entityMatingEnergyNeeded = new JLabel();
-        entityMatingEnergyNeeded.setBounds(5, 165, 250, 15);
-        entityBreedLength = new JLabel();
-        entityBreedLength.setBounds(5, 185, 250, 15);
-        entityBreedSpeed = new JLabel();
-        entityBreedSpeed.setBounds(5, 205, 250, 15);
-        entityBreedTime = new JLabel();
-        entityBreedTime.setBounds(5, 225, 250, 15);
-        entityPregnant = new JLabel();
-        entityPregnant.setBounds(5, 245, 250, 15);
-        entityAI = new JLabel();
-        entityAI.setBounds(5, 265, 250, 15);
-        entityBreedCooldown = new JLabel();
-        entityBreedCooldown.setBounds(265, 5, 250, 15);
-        entityBreedCooldownTime = new JLabel();
-        entityBreedCooldownTime.setBounds(265, 25, 250, 15);
-        entityBreedFactor = new JLabel();
-        entityBreedFactor.setBounds(265, 45, 250, 15);
-        entityInfo.setLayout(null);
+        String[] rows = {"variable", "value"};
+        Object[][] columns = {{"AI", null}, {"coordinates", null}, {"gender", null}, {"age", null},
+                {"max age", null}, {"energy", null}, {"max energy", null}, {"speed", null},
+                {"vision range", null}, {"mating energy needed", null}, {"breed length", null},
+                {"breed speed", null}, {"breed time", null}, {"breed cooldown", null},
+                {"breed cooldown time", null}, {"breed factor", null}, {"pregnant", null}};
+        entityInfoTable = new JTable();
+        entityInfoTable.setModel(new DefaultTableModel(columns, rows) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void setValueAt(Object o, int x, int y) {
+                if (o instanceof Number) {
+                    super.setValueAt(String.format("%.2f", o), x, y);
+                    return;
+                }
+                super.setValueAt(o, x, y);
+            }
+        });
 
         entityKill = new JButton("Kill entity");
-        entityKill.setBounds(265, 205, 100, 15);
         entityKill.addActionListener(this);
         entityClone = new JButton("Clone entity");
-        entityClone.setBounds(265, 225, 100, 15);
         entityClone.addActionListener(this);
 
-        entityInfo.add(entityInfoToString);
-        entityInfo.add(entityPosition);
-        entityInfo.add(entityAge);
-        entityInfo.add(entityMaxAge);
-        entityInfo.add(entityEnergy);
-        entityInfo.add(entityMaxEnergy);
-        entityInfo.add(entitySpeed);
-        entityInfo.add(entityVisionRange);
-        entityInfo.add(entityMatingEnergyNeeded);
-        entityInfo.add(entityBreedLength);
-        entityInfo.add(entityBreedSpeed);
-        entityInfo.add(entityBreedTime);
-        entityInfo.add(entityPregnant);
-        entityInfo.add(entityAI);
-        entityInfo.add(entityBreedCooldown);
-        entityInfo.add(entityBreedCooldownTime);
-        entityInfo.add(entityBreedFactor);
-        entityInfo.add(entityKill);
-        entityInfo.add(entityClone);
+        JPanel entityBtnsPanel = new JPanel(new BorderLayout());
+        entityBtnsPanel.add(entityKill, BorderLayout.WEST);
+        entityBtnsPanel.add(entityClone, BorderLayout.EAST);
+
+        entityPanel.add(entityInfoTable, BorderLayout.CENTER);
+        entityPanel.add(entityBtnsPanel, BorderLayout.SOUTH);
 
         rightContainer.add(textLabel);
         rightContainer.add(Box.createVerticalStrut(10));
         rightContainer.add(speedLabel);
         rightContainer.add(speedSlider);
         rightContainer.add(maxFoodContainer);
-        rightContainer.add(entityInfo);
-        entityInfo.setFocusTraversalPolicy(new FocusTraversalOnArray(
-                new Component[] {entityInfoToString, entityPosition, entityAge, entityMaxAge,
-                        entityEnergy, entityMaxEnergy, entitySpeed, entityVisionRange}));
+        rightContainer.add(entityPanel);
 
         split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, view, rightContainer);
         split.setResizeWeight(0.8);
@@ -202,39 +151,40 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
     public void displayEntity(Creature c) {
         if (c == null) {
             creature = null;
-            entityInfo.setVisible(false);
+            entityPanel.setVisible(false);
             return;
         }
 
         creature = c;
-        entityInfoToString.setText(c.toString());
-        entityPosition.setText("Position: " + String.format("%.2f", c.getPosition().getX()) + ", "
-                + String.format("%.2f", c.getPosition().getY()));
-        entityAge.setText("Age: " + String.format("%.2f", c.getAge()));
-        entityMaxAge.setText("Max age: " + String.format("%.2f", c.getMaxAge()));
-        entityEnergy.setText("Energy: " + String.format("%.2f", c.getEnergy()));
-        entityMaxEnergy.setText("Max energy: " + String.format("%.2f", c.getMaxEnergy()));
-        entitySpeed.setText("Speed: " + String.format("%.2f", c.getSpeed()));
-        entityVisionRange.setText("Vision range: " + String.format("%.2f", c.getVisionRange()));
-        entityMatingEnergyNeeded.setText(
-                "Mating energy needed: " + String.format("%.2f", c.getMatingEnergyNeeded()));
-        entityBreedLength.setText("Breed length: " + String.format("%.2f", c.getBreedLength()));
-        entityBreedSpeed.setText("Breed speed: " + String.format("%.2f", c.getBreedSpeed()));
-        entityBreedTime.setText("Breed time: " + String.format("%.2f", c.getBreedTime()));
-        entityPregnant.setText("Pregnant: " + c.isPregnant());
-        entityAI.setText("AI: " + c.getAI().getClass().getSimpleName());
-        entityBreedCooldown
-                .setText("Breed cooldown: " + String.format("%.2f", c.getBreedCooldown()));
-        entityBreedCooldownTime
-                .setText("Breed cooldown time: " + String.format("%.2f", c.getBreedCooldownTime()));
-        entityBreedFactor.setText("Breed factor: " + String.format("%.2f", c.getBreedFactor()));
-        entityInfo.setVisible(true);
+        int column = 1;
+        int row = 0; // to avoid further mess with changing all rows when a variable is added (ex)
+                     // in
+                     // the 1st place
+        entityInfoTable.setValueAt(c.getAI().getClass().getSimpleName(), row++, column);
+        entityInfoTable.setValueAt("x: " + String.format("%.2f", c.getPosition().getX()) + " y: "
+                + String.format("%.2f", c.getPosition().getY()), row++, column);
+        entityInfoTable.setValueAt(c.getGender(), row++, column);
+        entityInfoTable.setValueAt(c.getAge(), row++, column);
+        entityInfoTable.setValueAt(c.getMaxAge(), row++, column);
+        entityInfoTable.setValueAt(c.getEnergy(), row++, column);
+        entityInfoTable.setValueAt(c.getMaxEnergy(), row++, column);
+        entityInfoTable.setValueAt(c.getSpeed(), row++, column);
+        entityInfoTable.setValueAt(c.getVisionRange(), row++, column);
+        entityInfoTable.setValueAt(c.getMatingEnergyNeeded(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedLength(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedSpeed(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedTime(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedCooldown(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedCooldownTime(), row++, column);
+        entityInfoTable.setValueAt(c.getBreedFactor(), row++, column);
+        entityInfoTable.setValueAt(c.isPregnant(), row++, column);
+        entityPanel.setVisible(true);
     }
 
-    public void update(double delta) {
+    public void update(double delta, boolean drawWorld) {
         textLabel.setText("Creatures: " + controller.getCreatures().size());
         speedSlider.setMaximum(controller.getMaxSpeedFactor());
-        controller.update(delta);
+        controller.update(delta, drawWorld);
     }
 
     @Override

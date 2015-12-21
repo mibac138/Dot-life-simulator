@@ -49,7 +49,7 @@ public class WorldController {
         return model.getFood();
     }
 
-    public void update(double delta) {
+    public void update(double delta, boolean drawWorld) {
         JSlider slider = window.getSpeedSlider();
         slider.setMaximum(WorldController.MAX_SPEED_FACTOR);
         window.setSpeedSlider(slider);
@@ -58,7 +58,8 @@ public class WorldController {
         if (model.getSpeedFactor() > 0) {
             updater.update(delta * model.getSpeedFactor());
             window.displayEntity(model.getSelectedCreature());
-            view.repaint();
+            if (drawWorld)
+                view.repaint();
         }
     }
 
