@@ -6,7 +6,6 @@ import static com.mibac.dots.wen.util.Debug.DRAW_BORDER;
 import static com.mibac.dots.wen.util.Debug.DRAW_PATH;
 import static com.mibac.dots.wen.util.Debug.DRAW_VISION;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D.Double;
 
@@ -14,7 +13,6 @@ import javax.swing.JPanel;
 
 import com.mibac.dots.wen.Creatures;
 import com.mibac.dots.wen.creatures.Creature;
-import com.mibac.dots.wen.creatures.Creature.Gender;
 import com.mibac.dots.wen.creatures.WorldModel;
 import com.mibac.dots.wen.view.themes.Theme;
 
@@ -57,13 +55,13 @@ public class WorldView extends JPanel {
         int creatureZoomed = applyZoom(CREATURE_SIZE);
 
         world.getFood().stream().forEach(food -> {
-            g.setColor(Color.GREEN);// g.setColor(t.getColor(food));
+            g.setColor(t.getColor(food));
             g.fillOval(applyZoom(food.getPosition().getX() - food2 + offsetX),
                     applyZoom(food.getPosition().getY() - food2 + offsetY), foodZoomed, foodZoomed);
         });
 
         world.getCreatures().stream().forEach(creature -> {
-            g.setColor(creature.getGender() == Gender.MALE ? Color.BLUE : Color.PINK);// g.setColor(t.getColor(creature));
+            g.setColor(t.getColor(creature));
             g.fillOval(applyZoom(creature.getPosition().getX() - creature2 + offsetX),
                     applyZoom(creature.getPosition().getY() - creature2 + offsetY), creatureZoomed,
                     creatureZoomed);
@@ -72,7 +70,7 @@ public class WorldView extends JPanel {
         Creature selected = world.getSelectedCreature();
 
         if (selected != null) {
-            g.setColor(Color.ORANGE);// g.setColor(t.getSelectedCreatureColor());
+            g.setColor(t.getSelectedCreatureColor());
             g.drawOval(applyZoom(selected.getPosition().getX() - creature2 + offsetX),
                     applyZoom(selected.getPosition().getY() - creature2 + offsetY), creatureZoomed,
                     creatureZoomed);
@@ -80,14 +78,14 @@ public class WorldView extends JPanel {
 
         if (DRAW.isEnabled()) {
             if (DRAW_BORDER.isEnabled()) {
-                g.setColor(Color.BLACK);// g.setColor(t.getBorderColor());
+                g.setColor(t.getBorderColor());
                 g.drawRect(applyZoom(offsetX), applyZoom(offsetY), applyZoom(world.getWidth()),
                         applyZoom(world.getHeight()));
             }
 
             world.getCreatures().stream().forEach(creature -> {
                 if (DRAW_PATH.isEnabled() && creature.getTarget() != null) {
-                    g.setColor(Color.RED);// g.setColor(t.getPathColor());
+                    g.setColor(t.getPathColor());
                     g.drawLine(applyZoom(creature.getPosition().getX() + offsetX),
                             applyZoom(creature.getPosition().getY() + offsetY),
                             applyZoom(creature.getTarget().getX() + offsetX),
@@ -97,7 +95,7 @@ public class WorldView extends JPanel {
                 if (DRAW_VISION.isEnabled()) {
                     int vision = (int) creature.getVisionRange();
 
-                    g.setColor(Color.RED);// g.setColor(t.getVisionRangeColor());
+                    g.setColor(t.getVisionRangeColor());
                     g.drawOval(applyZoom(creature.getPosition().getX() - vision + offsetX),
                             applyZoom(creature.getPosition().getY() - vision + offsetY),
                             applyZoom(vision * 2), applyZoom(vision * 2));
