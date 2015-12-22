@@ -18,9 +18,8 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public class WorldModel implements Serializable {
-    public static final String EXTENSION = ".dw";
-    private transient File path;
     private static final long serialVersionUID = 1L;
+    public static final String FILE_EXTENSION = ".dw";
     private Vector<Creature> creatures;
     private Vector<Food> food;
     private double goodMutationChance;
@@ -44,17 +43,6 @@ public class WorldModel implements Serializable {
         this.speedFactor = speedFactor;
         this.maxFoodAmount = maxFoodAmount;
         this.foodCreationRatio = foodCreationRatio;
-
-        creatures.stream().forEach(c -> addCreature(c));
-        food.stream().forEach(f -> addFood(f));
-    }
-
-    public File getPath() {
-        return path;
-    }
-
-    public void setPath(File path) {
-        this.path = path;
     }
 
     public double getGoodMutationChance() {
@@ -172,8 +160,8 @@ public class WorldModel implements Serializable {
 
     public void save(File directory) {
         try {
-            if (!directory.getAbsolutePath().endsWith(EXTENSION))
-                directory = new File(directory.getAbsoluteFile() + EXTENSION);
+            if (!directory.getAbsolutePath().endsWith(FILE_EXTENSION))
+                directory = new File(directory.getAbsoluteFile() + FILE_EXTENSION);
             if (!directory.exists())
                 directory.createNewFile();
 
@@ -189,8 +177,8 @@ public class WorldModel implements Serializable {
 
     public static WorldModel load(File directory)
             throws IOException, ClassNotFoundException, InvalidClassException {
-        if (!directory.getAbsolutePath().endsWith(EXTENSION))
-            directory = new File(directory.getAbsolutePath() + EXTENSION);
+        if (!directory.getAbsolutePath().endsWith(FILE_EXTENSION))
+            directory = new File(directory.getAbsolutePath() + FILE_EXTENSION);
 
         FileInputStream fis = new FileInputStream(directory);
         BufferedInputStream bis = new BufferedInputStream(fis);

@@ -97,6 +97,14 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
             private static final long serialVersionUID = 1L;
 
             @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0)
+                    return false;
+
+                return super.isCellEditable(row, column);
+            }
+
+            @Override
             public void setValueAt(Object o, int x, int y) {
                 if (o instanceof Number) {
                     super.setValueAt(String.format("%.2f", o), x, y);
@@ -181,10 +189,14 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
         entityPanel.setVisible(true);
     }
 
-    public void update(double delta, boolean drawWorld) {
+    public void update(double delta) {
         textLabel.setText("Creatures: " + controller.getCreatures().size());
         speedSlider.setMaximum(controller.getMaxSpeedFactor());
-        controller.update(delta, drawWorld);
+        controller.update(delta);
+    }
+
+    public void render(boolean drawWorld) {
+        controller.render(drawWorld);
     }
 
     @Override

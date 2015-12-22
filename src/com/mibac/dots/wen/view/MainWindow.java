@@ -168,8 +168,6 @@ public class MainWindow extends JFrame implements ActionListener {
                 return;
             }
 
-            model.setPath(dir);
-
             String name = dir.getName();
             name = name.substring(0, name.lastIndexOf("."));
 
@@ -179,7 +177,7 @@ public class MainWindow extends JFrame implements ActionListener {
         else if (e.getSource() == createWorldItem)
             new CreateWorldView(this);
         else if (e.getSource() == createCreatureItem)
-            new CreateCreatureView(getWindow(tabbedPane.getSelectedIndex()).getController());
+            new CreateCreatureView2();// (getWindow(tabbedPane.getSelectedIndex()).getController());
         else if (e.getSource() == optionsItem)
             new OptionsView();
         else if (e.getSource() == debugOptionsItem)
@@ -209,7 +207,21 @@ public class MainWindow extends JFrame implements ActionListener {
     public void update(double delta) {
         for (int i = 0; i < tabbedPane.getComponentCount() - 1; i++)
             if (tabbedPane.getComponentAt(i) instanceof Window)
-                ((Window) tabbedPane.getComponentAt(i)).update(delta, drawWorld);
+                ((Window) tabbedPane.getComponentAt(i)).update(delta);
+    }
+
+
+    public void render() {
+        for (int i = 0; i < tabbedPane.getComponentCount() - 1; i++)
+            if (tabbedPane.getComponentAt(i) instanceof Window)
+                ((Window) tabbedPane.getComponentAt(i)).render(drawWorld);
+    }
+
+    public static boolean confirmQuit(String what) {
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to close this "
+                + what
+                + "? Any unsaved progress will be deleted! You can save progress under File menu");
+        return confirm == JOptionPane.YES_OPTION;
     }
 
     private File askForDirectory(String text, File dir) {

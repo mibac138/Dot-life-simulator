@@ -9,10 +9,11 @@ import java.awt.event.MouseListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.plaf.metal.MetalIconFactory;
+import javax.swing.UIManager;
+
+import com.mibac.dots.wen.view.MainWindow;
 
 public class JCloseableTabbedPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
@@ -46,25 +47,21 @@ public class JCloseableTabbedPane extends JTabbedPane {
             this.tab = tab;
 
             // TODO some nicer icon
-            JButton button = new JButton(MetalIconFactory.getInternalFrameCloseIcon(14));
-            button.setMargin(new Insets(0, 0, 0, 0));
+            JButton button = new JButton(UIManager.getIcon("InternalFrame.closeIcon"));// MetalIconFactory.getInternalFrameCloseIcon(14));
+            button.setMargin(new Insets(-2, 0, -2, -5));
             button.addMouseListener(this);
             add(button);
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getSource() instanceof JButton) {
-                int confirm = JOptionPane.showConfirmDialog(null,
-                        "Are you sure you want to close this tab? Any unsaved progress will be deleted! You can save the tab under File menu");
-                if (confirm != JOptionPane.YES_OPTION)
-                    return;
-
-                JButton clickedButton = (JButton) e.getSource();
-                JTabbedPane tabbedPane =
-                        (JTabbedPane) clickedButton.getParent().getParent().getParent();
-                tabbedPane.remove(tab);
-            }
+            if (e.getSource() instanceof JButton)
+                if (MainWindow.confirmQuit("tab")) {
+                    JButton clickedButton = (JButton) e.getSource();
+                    JTabbedPane tabbedPane =
+                            (JTabbedPane) clickedButton.getParent().getParent().getParent();
+                    tabbedPane.remove(tab);
+                }
         }
 
         @Override

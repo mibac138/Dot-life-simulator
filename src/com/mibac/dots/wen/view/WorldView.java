@@ -12,15 +12,18 @@ import java.awt.geom.Point2D.Double;
 
 import javax.swing.JPanel;
 
+import com.mibac.dots.wen.Creatures;
 import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Creature.Gender;
 import com.mibac.dots.wen.creatures.WorldModel;
+import com.mibac.dots.wen.view.themes.Theme;
 
 public class WorldView extends JPanel {
     private static final long serialVersionUID = 1L;
     public static int CREATURE_SIZE = 12;
     public static int FOOD_SIZE = 8;
 
+    private Theme t;
     private WorldModel world;
 
     private int zoomFactor; // it's actually unzoom (?) factor -- the higher the value the view is
@@ -35,28 +38,32 @@ public class WorldView extends JPanel {
         this.offsetY = 0;
 
         setFocusable(true);
+        update();
+    }
+
+    public void update() {
+        t = Creatures.getTheme();
     }
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        // TODO Double buffered rendering (?)
+        g.setColor(t.getBackgroundColor());
+        g.fillRect(0, 0, getWidth(), getHeight());
         int creature2 = CREATURE_SIZE / 2;
         int food2 = FOOD_SIZE / 2;
 
         int foodZoomed = applyZoom(FOOD_SIZE);
         int creatureZoomed = applyZoom(CREATURE_SIZE);
 
-        g.setColor(Color.GREEN);
-        world.getFood().stream()
-                .forEach(food -> g.fillOval(applyZoom(food.getPosition().getX() - food2 + offsetX),
-                        applyZoom(food.getPosition().getY() - food2 + offsetY), foodZoomed,
-                        foodZoomed));
+        world.getFood().stream().forEach(food -> {
+            g.setColor(Color.GREEN);// g.setColor(t.getColor(food));
+            g.fillOval(applyZoom(food.getPosition().getX() - food2 + offsetX),
+                    applyZoom(food.getPosition().getY() - food2 + offsetY), foodZoomed, foodZoomed);
+        });
 
         world.getCreatures().stream().forEach(creature -> {
-            if (creature.getGender() == Gender.MALE)
-                g.setColor(Color.BLUE);
-            else
-                g.setColor(Color.PINK);
+            g.setColor(creature.getGender() == Gender.MALE ? Color.BLUE : Color.PINK);// g.setColor(t.getColor(creature));
             g.fillOval(applyZoom(creature.getPosition().getX() - creature2 + offsetX),
                     applyZoom(creature.getPosition().getY() - creature2 + offsetY), creatureZoomed,
                     creatureZoomed);
@@ -65,28 +72,32 @@ public class WorldView extends JPanel {
         Creature selected = world.getSelectedCreature();
 
         if (selected != null) {
-            g.setColor(Color.RED);
+            g.setColor(Color.ORANGE);// g.setColor(t.getSelectedCreatureColor());
             g.drawOval(applyZoom(selected.getPosition().getX() - creature2 + offsetX),
                     applyZoom(selected.getPosition().getY() - creature2 + offsetY), creatureZoomed,
                     creatureZoomed);
         }
 
         if (DRAW.isEnabled()) {
-            g.setColor(Color.RED);
-            if (DRAW_BORDER.isEnabled())
+            if (DRAW_BORDER.isEnabled()) {
+                g.setColor(Color.BLACK);// g.setColor(t.getBorderColor());
                 g.drawRect(applyZoom(offsetX), applyZoom(offsetY), applyZoom(world.getWidth()),
                         applyZoom(world.getHeight()));
+            }
 
             world.getCreatures().stream().forEach(creature -> {
-                if (DRAW_PATH.isEnabled() && creature.getTarget() != null)
+                if (DRAW_PATH.isEnabled() && creature.getTarget() != null) {
+                    g.setColor(Color.RED);// g.setColor(t.getPathColor());
                     g.drawLine(applyZoom(creature.getPosition().getX() + offsetX),
                             applyZoom(creature.getPosition().getY() + offsetY),
                             applyZoom(creature.getTarget().getX() + offsetX),
                             applyZoom(creature.getTarget().getY() + offsetY));
+                }
 
                 if (DRAW_VISION.isEnabled()) {
                     int vision = (int) creature.getVisionRange();
 
+                    g.setColor(Color.RED);// g.setColor(t.getVisionRangeColor());
                     g.drawOval(applyZoom(creature.getPosition().getX() - vision + offsetX),
                             applyZoom(creature.getPosition().getY() - vision + offsetY),
                             applyZoom(vision * 2), applyZoom(vision * 2));

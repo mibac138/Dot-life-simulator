@@ -49,18 +49,22 @@ public class WorldController {
         return model.getFood();
     }
 
-    public void update(double delta, boolean drawWorld) {
+    public void update(double delta) {
         JSlider slider = window.getSpeedSlider();
         slider.setMaximum(WorldController.MAX_SPEED_FACTOR);
         window.setSpeedSlider(slider);
         handleInput();
+        view.update();
 
         if (model.getSpeedFactor() > 0) {
             updater.update(delta * model.getSpeedFactor());
             window.displayEntity(model.getSelectedCreature());
-            if (drawWorld)
-                view.repaint();
         }
+    }
+
+    public void render(boolean drawWorld) {
+        if (drawWorld)
+            view.repaint();
     }
 
     public void setSelectedCreature(Creature c) {

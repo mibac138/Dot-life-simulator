@@ -69,7 +69,7 @@ public abstract class EntityAI implements Serializable {
         return food;
     }
 
-    public final long getThinkLength() {
+    public long getThinkLength() {
         return time;
     }
 
