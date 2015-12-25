@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import com.mibac.dots.wen.Creatures;
+import com.mibac.dots.wen.Creatures.Modifier;
 import com.mibac.dots.wen.controller.WorldController;
 import com.mibac.dots.wen.creatures.WorldModel;
 import com.mibac.dots.wen.util.JCloseableTabbedPane;
@@ -49,15 +51,20 @@ public class MainWindow extends JFrame implements ActionListener {
     private boolean drawWorld;
 
     public MainWindow() {
+        setVisible(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1366, 768);
         setLocationRelativeTo(null);
-        setTitle("Experimental version of Dots [formerly Sierra beta]");
+        String s = "";
+        if (Creatures.VERSION_MODIFIER != Modifier.RELEASE)
+            s = " " + Creatures.VERSION_MODIFIER.toString();
+        setTitle("Dots " + Creatures.VERSION_NAME + s + " (" + Creatures.VERSION_MAJOR + "."
+                + Creatures.VERSION_MINOR + ")");
         drawWorld = true;
 
         initUI();
 
-        // setResizable(true);
+        setResizable(true);
         setVisible(true);
     }
 
@@ -177,7 +184,7 @@ public class MainWindow extends JFrame implements ActionListener {
         else if (e.getSource() == createWorldItem)
             new CreateWorldView(this);
         else if (e.getSource() == createCreatureItem)
-            new CreateCreatureView2();// (getWindow(tabbedPane.getSelectedIndex()).getController());
+            new CreateCreatureView(getWindow(tabbedPane.getSelectedIndex()).getController());
         else if (e.getSource() == optionsItem)
             new OptionsView();
         else if (e.getSource() == debugOptionsItem)

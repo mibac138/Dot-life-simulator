@@ -4,20 +4,29 @@ package com.mibac.dots.wen.ai;
 import static com.mibac.dots.wen.util.Debug.PRINT_AI;
 import static com.mibac.dots.wen.util.Logger.log;
 
+import java.awt.Color;
 import java.util.Vector;
 
 import com.mibac.dots.wen.creatures.Creature;
+import com.mibac.dots.wen.creatures.Creature.Gender;
 import com.mibac.dots.wen.creatures.Food;
 
 public class BetterAI extends EntityAI {
     private static final long serialVersionUID = 1L;
+    private Color c;
 
     @Override
-    public void init() {}
+    public void init() {
+        c = creature.getGender() == Gender.MALE ? Color.BLUE : Color.PINK;
+        creature.setTargetColor(c);
+    }
 
     @Override
-    protected void think(Vector<Creature> creatures, Vector<Food> food) { // Move random
+    protected void think(Vector<Creature> creatures, Vector<Food> food) {
         creature.setTarget(null);
+        if (creature.getTargetColor().equals(creature.getColor()))
+            creature.setTargetColor(new Color((int) (255 * Math.random()),
+                    (int) (255 * Math.random()), (int) (255 * Math.random())));
         Food nearestFood = food.size() >= 1 ? food.get(0) : null;
 
         // Goto food

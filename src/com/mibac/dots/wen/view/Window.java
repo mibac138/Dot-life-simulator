@@ -1,6 +1,7 @@
 package com.mibac.dots.wen.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -55,13 +56,18 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
         JPanel rightContainer = new JPanel();
         rightContainer.setLayout(new BoxLayout(rightContainer, BoxLayout.PAGE_AXIS));
 
+        JPanel worldData = new JPanel();
+        // worldData.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        worldData.setLayout(new BoxLayout(worldData, BoxLayout.PAGE_AXIS));
+        worldData.setBackground(Color.YELLOW);
+
         textLabel = new JLabel("Creatures");
         textLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         speedLabel = new JLabel("Speed");
         speedLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        speedSlider = new JSlider(0, controller.getMaxSpeedFactor(), controller.getSpeedFactor());
+        speedSlider = new JSlider(0, controller.getMaxSpeedFactor(), controller.getSpeed());
         speedSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         speedSlider.setMajorTickSpacing(5);
         speedSlider.setMinorTickSpacing(1);
@@ -84,14 +90,22 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
         maxFoodContainer.add(maxFoodLabel);
         maxFoodContainer.add(maxFoodSpinner);
 
+        worldData.add(textLabel);
+        worldData.add(Box.createVerticalStrut(10));
+        worldData.add(speedLabel);
+        worldData.add(speedSlider);
+        worldData.add(maxFoodContainer);
+
         entityPanel = new JPanel(new BorderLayout());
 
         String[] rows = {"variable", "value"};
-        Object[][] columns = {{"AI", null}, {"coordinates", null}, {"gender", null}, {"age", null},
-                {"max age", null}, {"energy", null}, {"max energy", null}, {"speed", null},
-                {"vision range", null}, {"mating energy needed", null}, {"breed length", null},
-                {"breed speed", null}, {"breed time", null}, {"breed cooldown", null},
-                {"breed cooldown time", null}, {"breed factor", null}, {"pregnant", null}};
+        Object[][] columns = {{"AI", null}, {"coordinates", null}, {"color", null},
+                {"target color", null}, {"color animation data", null}, {"gender", null},
+                {"age", null}, {"max age", null}, {"energy", null}, {"max energy", null},
+                {"speed", null}, {"vision range", null}, {"mating energy needed", null},
+                {"breed length", null}, {"breed speed", null}, {"breed time", null},
+                {"breed cooldown", null}, {"breed cooldown time", null}, {"breed factor", null},
+                {"pregnant", null}};
         entityInfoTable = new JTable();
         entityInfoTable.setModel(new DefaultTableModel(columns, rows) {
             private static final long serialVersionUID = 1L;
@@ -125,12 +139,15 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
 
         entityPanel.add(entityInfoTable, BorderLayout.CENTER);
         entityPanel.add(entityBtnsPanel, BorderLayout.SOUTH);
+        entityPanel.setVisible(false);
 
-        rightContainer.add(textLabel);
-        rightContainer.add(Box.createVerticalStrut(10));
-        rightContainer.add(speedLabel);
-        rightContainer.add(speedSlider);
-        rightContainer.add(maxFoodContainer);
+        // rightContainer.add(textLabel);
+        // rightContainer.add(Box.createVerticalStrut(10));
+        // rightContainer.add(speedLabel);
+        // rightContainer.add(speedSlider);
+        rightContainer.add(Box.createVerticalBox());
+        rightContainer.add(worldData);
+        // rightContainer.add(maxFoodContainer);
         rightContainer.add(entityPanel);
 
         split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, view, rightContainer);
@@ -171,6 +188,9 @@ public class Window extends JPanel implements ChangeListener, ActionListener {
         entityInfoTable.setValueAt(c.getAI().getClass().getSimpleName(), row++, column);
         entityInfoTable.setValueAt("x: " + String.format("%.2f", c.getPosition().getX()) + " y: "
                 + String.format("%.2f", c.getPosition().getY()), row++, column);
+        entityInfoTable.setValueAt(c.getColor(), row++, column);
+        entityInfoTable.setValueAt(c.getTargetColor(), row++, column);
+        entityInfoTable.setValueAt(c.getColorAnimation(), row++, column);
         entityInfoTable.setValueAt(c.getGender(), row++, column);
         entityInfoTable.setValueAt(c.getAge(), row++, column);
         entityInfoTable.setValueAt(c.getMaxAge(), row++, column);

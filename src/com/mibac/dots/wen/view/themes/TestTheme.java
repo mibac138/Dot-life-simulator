@@ -4,9 +4,6 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 
-import com.mibac.dots.wen.creatures.Creature;
-import com.mibac.dots.wen.creatures.Food;
-
 public class TestTheme extends Theme {
 
     @Override
@@ -32,16 +29,6 @@ public class TestTheme extends Theme {
     @Override
     public Color getVisionRangeColor() {
         return Color.BLACK;
-    }
-
-    @Override
-    public Color getColor(Creature c) {
-        return Color.CYAN;
-    }
-
-    @Override
-    public Color getColor(Food f) {
-        return Color.MAGENTA;
     }
 
     @Override

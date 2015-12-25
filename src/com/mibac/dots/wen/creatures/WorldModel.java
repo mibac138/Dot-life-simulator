@@ -22,27 +22,34 @@ public class WorldModel implements Serializable {
     public static final String FILE_EXTENSION = ".dw";
     private Vector<Creature> creatures;
     private Vector<Food> food;
+    private double moveAmount;
+    private double fadeTime;
     private double goodMutationChance;
     private double mutationRate;
     private int width, height;
     private int selectedCreature;
-    private int speedFactor;
+    private int speed;
     private int maxFoodAmount;
     private short foodCreationRatio;
 
-    WorldModel(Vector<Creature> creatures, Vector<Food> food, double goodMutationChance,
-            double mutationRate, int width, int height, int speedFactor, int maxFoodAmount,
-            short foodCreationRatio) {
+    WorldModel(Vector<Creature> creatures, Vector<Food> food, double moveAmount, double fadeTime,
+            double goodMutationChance, double mutationRate, int width, int height, int speed,
+            int maxFoodAmount, short foodCreationRatio) {
         this.creatures = new Vector<>();
         this.food = new Vector<>();
+        this.moveAmount = moveAmount;
+        this.fadeTime = fadeTime;
         this.goodMutationChance = goodMutationChance;
         this.mutationRate = mutationRate;
         this.width = width;
         this.height = height;
         this.selectedCreature = -1;
-        this.speedFactor = speedFactor;
+        this.speed = speed;
         this.maxFoodAmount = maxFoodAmount;
         this.foodCreationRatio = foodCreationRatio;
+
+        creatures.forEach(e -> addCreature(e));
+        food.forEach(e -> addFood(e));
     }
 
     public double getGoodMutationChance() {
@@ -134,12 +141,28 @@ public class WorldModel implements Serializable {
         this.food.remove(food);
     }
 
-    public int getSpeedFactor() {
-        return speedFactor;
+    public double getMoveAmount() {
+        return moveAmount;
     }
 
-    public void setSpeedFactor(int speedFactor) {
-        this.speedFactor = speedFactor;
+    public void setMoveAmount(double moveAmount) {
+        this.moveAmount = moveAmount;
+    }
+
+    public double getFadeTime() {
+        return fadeTime;
+    }
+
+    public void setFadeTime(double fadeTime) {
+        this.fadeTime = fadeTime;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public int getWidth() {
@@ -203,21 +226,25 @@ public class WorldModel implements Serializable {
     public static class Builder {
         private Vector<Creature> creatures;
         private Vector<Food> food;
+        private double moveAmount;
+        private double fadeTime;
         private double goodMutationChance;
         private double mutationRate;
         private int width, height;
-        private int speedFactor;
+        private int speed;
         private int maxFoodAmount;
         private short foodCreationRatio;
 
         public Builder(int width, int height) {
             this.creatures = new Vector<>();
             this.food = new Vector<>();
+            this.moveAmount = 1.25;
+            this.fadeTime = 5.73;
             this.goodMutationChance = 0.6;
             this.mutationRate = 0.1;
             this.width = width;
             this.height = height;
-            this.speedFactor = 1;
+            this.speed = 1;
             this.foodCreationRatio = 50;
             this.maxFoodAmount = 500;
         }
@@ -232,6 +259,16 @@ public class WorldModel implements Serializable {
             return this;
         }
 
+        public Builder setMoveAmount(double moveAmount) {
+            this.moveAmount = moveAmount;
+            return this;
+        }
+
+        public Builder setFadeTime(double fadeTime) {
+            this.fadeTime = fadeTime;
+            return this;
+        }
+
         public Builder generateRandomWorld(int creatureAmount, int foodAmount) {
             for (int i = 0; i < creatureAmount; i++)
                 creatures.add(
@@ -243,8 +280,8 @@ public class WorldModel implements Serializable {
             return this;
         }
 
-        public Builder setSpeedFactor(int speedFactor) {
-            this.speedFactor = speedFactor;
+        public Builder setSpeed(int speed) {
+            this.speed = speed;
             return this;
         }
 
@@ -269,8 +306,8 @@ public class WorldModel implements Serializable {
         }
 
         public WorldModel build() {
-            return new WorldModel(creatures, food, goodMutationChance, mutationRate, width, height,
-                    speedFactor, maxFoodAmount, foodCreationRatio);
+            return new WorldModel(creatures, food, moveAmount, fadeTime, goodMutationChance,
+                    mutationRate, width, height, speed, maxFoodAmount, foodCreationRatio);
         }
     }
 }

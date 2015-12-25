@@ -111,8 +111,8 @@ public class CreateWorldView extends JFrame implements ActionListener {
         }
 
         WorldModel model = new WorldModel.Builder(width, height).setFoodCreationRatio(foodRate)
-                .setGoodMutationChance(goodMutationChance).setMutationRate(mutationRate)
-                .setSpeedFactor(1).build();
+                .setGoodMutationChance(goodMutationChance).setMutationRate(mutationRate).setSpeed(1)
+                .build();
 
         main.addWindow(new Window(new WorldController(model)));
 

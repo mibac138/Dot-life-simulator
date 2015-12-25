@@ -15,22 +15,14 @@ import com.mibac.dots.wen.view.WorldInputListener;
 import com.mibac.dots.wen.view.WorldView;
 
 public class WorldController {
-    public static int MAX_SPEED_FACTOR = 10;
+    public static int MAX_SPEED = 10;
     private WorldModel model;
     private WorldInputListener in;
     private WorldView view;
     private WorldUpdater updater;
     private Window window;
 
-    public WorldController(WorldModel model, WorldInputListener in, WorldView view) {
-        init(model, in, view, new WorldUpdater(model));
-    }
-
-    public WorldController(WorldModel model) {
-        init(model, new WorldInputListener(this), new WorldView(model), new WorldUpdater(model));
-    }
-
-    private void init(WorldModel model, WorldInputListener in, WorldView view,
+    public WorldController(WorldModel model, WorldInputListener in, WorldView view,
             WorldUpdater updater) {
         this.model = model;
         this.in = in;
@@ -39,6 +31,20 @@ public class WorldController {
         this.view.addMouseListener(in);
         this.view.addMouseWheelListener(in);
         this.updater = updater;
+    }
+
+    public WorldController(WorldModel model, WorldInputListener in, WorldView view) {
+        this(model, in, view, new WorldUpdater(model));
+    }
+
+    public WorldController(WorldModel model) {
+        this.model = model;
+        this.in = new WorldInputListener(this);
+        this.view = new WorldView(model);
+        this.view.addKeyListener(in);
+        this.view.addMouseListener(in);
+        this.view.addMouseWheelListener(in);
+        this.updater = new WorldUpdater(model);
     }
 
     public Vector<Creature> getCreatures() {
@@ -51,13 +57,13 @@ public class WorldController {
 
     public void update(double delta) {
         JSlider slider = window.getSpeedSlider();
-        slider.setMaximum(WorldController.MAX_SPEED_FACTOR);
+        slider.setMaximum(MAX_SPEED);
         window.setSpeedSlider(slider);
         handleInput();
         view.update();
 
-        if (model.getSpeedFactor() > 0) {
-            updater.update(delta * model.getSpeedFactor());
+        if (model.getSpeed() > 0) {
+            updater.update(delta * model.getSpeed());
             window.displayEntity(model.getSelectedCreature());
         }
     }
@@ -85,26 +91,26 @@ public class WorldController {
     }
 
     public int getMaxSpeedFactor() {
-        return WorldController.MAX_SPEED_FACTOR;
+        return MAX_SPEED;
     }
 
-    public void setMaxSpeedFactor(int maxSpeedFactor) {
-        WorldController.MAX_SPEED_FACTOR = maxSpeedFactor;
+    public void setMaxSpeedFactor(int maxSpeed) {
+        MAX_SPEED = maxSpeed;
     }
 
-    public void setSpeedFactor(int speedFactor) {
-        model.setSpeedFactor(speedFactor);
-        JSlider speed = window.getSpeedSlider();
-        speed.setValue(model.getSpeedFactor());
-        window.setSpeedSlider(speed);
+    public void setSpeedFactor(int speed) {
+        model.setSpeed(speed);
+        JSlider speedSlider = window.getSpeedSlider();
+        speedSlider.setValue(model.getSpeed());
+        window.setSpeedSlider(speedSlider);
     }
 
-    public int getSpeedFactor() {
-        return model.getSpeedFactor();
+    public int getSpeed() {
+        return model.getSpeed();
     }
 
-    public void changeSpeedFactor(int change) {
-        setSpeedFactor(getSpeedFactor() + change);
+    public void changeSpeed(int change) {
+        setSpeedFactor(getSpeed() + change);
     }
 
     public void setViewInputFocus() {

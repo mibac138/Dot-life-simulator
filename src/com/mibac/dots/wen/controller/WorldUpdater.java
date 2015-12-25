@@ -7,6 +7,7 @@ import static com.mibac.dots.wen.util.Debug.PRINT_ENERGY;
 import static com.mibac.dots.wen.util.Debug.PRINT_MOVE;
 import static com.mibac.dots.wen.util.Logger.log;
 
+import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +17,7 @@ import com.mibac.dots.wen.creatures.Creature;
 import com.mibac.dots.wen.creatures.Creature.Gender;
 import com.mibac.dots.wen.creatures.Food;
 import com.mibac.dots.wen.creatures.WorldModel;
+import com.mibac.dots.wen.util.ColorAnimationData;
 
 public class WorldUpdater {
     private Vector<Creature> newBornList;
@@ -27,11 +29,12 @@ public class WorldUpdater {
     }
 
     public void update(double delta) {
-        delta *= model.getSpeedFactor();
+        delta *= model.getSpeed();
         for (Iterator<Creature> i = model.getCreatures().iterator(); i.hasNext();) {
             Creature creature = i.next();
             creature.update();
             boolean a = true;
+            handleColorizing(creature, delta);
             handleMoving(creature, delta);
             handleMating(creature, delta);
             handleEating(creature, delta);
@@ -50,6 +53,33 @@ public class WorldUpdater {
         }
 
         generateFood();
+    }
+
+    private void handleColorizing(Creature c, double delta) {
+        if (c.getColorAnimation() == null && !c.getColor().equals(c.getTargetColor()))
+            c.setColorAnimation(new ColorAnimationData(c.getColor(), c.getTargetColor(),
+                    (long) (System.nanoTime() / 1E6),
+                    (long) (Creature.getColorDiff(c.getColor(), c.getTargetColor())
+                            * model.getFadeTime())));
+        else if (c.getColorAnimation() != null) {
+            double time = System.nanoTime() / 1E6 - c.getColorAnimation().getStartTime();
+            if (time > c.getColorAnimation().getStartTime())
+                c.setColorAnimation(null);
+            else {
+                Color start = c.getColorAnimation().getStartColor();
+                Color end = c.getColorAnimation().getTargetColor();
+                double fraction = Math.min(1, time / c.getColorAnimation().getDuration());
+
+                int r = (int) Math.abs(fraction * end.getRed() + (1 - fraction) * start.getRed());
+                int g = (int) Math
+                        .abs(fraction * end.getGreen() + (1 - fraction) * start.getGreen());
+                int b = (int) Math.abs(fraction * end.getBlue() + (1 - fraction) * start.getBlue());
+                c.setColor(new Color(r, g, b));
+
+                if (c.getColorAnimation().getTargetColor().equals(c.getColor()))
+                    c.setColorAnimation(null);
+            }
+        }
     }
 
     private void handlePregnancy(Creature creature, double delta) {
@@ -75,7 +105,7 @@ public class WorldUpdater {
     }
 
     private void generateFood() {
-        for (int i = 0; i < model.getSpeedFactor(); i++)
+        for (int i = 0; i < model.getSpeed(); i++)
             if (model.getFood().size() >= model.getMaxFoodAmount())
                 break;
             else if (Math.random() * 100 < model.getFoodCreationRatio())
@@ -89,7 +119,7 @@ public class WorldUpdater {
             Double target = creature.getTarget();
             Double position = creature.getPosition();
 
-            if (target.distance(position) > speed * 1.25) {
+            if (target.distance(position) > speed * model.getMoveAmount()) {
                 double x = target.getX() - position.getX();
                 double y = target.getY() - position.getY();
                 double alpha = speed / Math.sqrt(x * x + y * y);
@@ -121,7 +151,7 @@ public class WorldUpdater {
             Creature secondCreature = secondIterator.next();
 
             if (creature.getPosition().distance(secondCreature.getPosition()) < creature.getSpeed()
-                    * delta * 1.25
+                    * delta * model.getMoveAmount()
                     && secondCreature.getEnergy() > secondCreature.getMatingEnergyNeeded()
                     && creature.getGender() != secondCreature.getGender()
                     && secondCreature.getBreedCooldownTime() <= 0 && !secondCreature.isPregnant()) {
@@ -145,7 +175,8 @@ public class WorldUpdater {
                         (int) Math.round((mother.getBreedFactor() + father.getBreedFactor() / 4) // father
                                                                                                  // has
                                                                                                  // 1/4th
-                                                                                                 // share
+                                                                                                 // of
+                                                                                                 // shares
                                 / 1.25 * Math.random());
                 if (fetusAmount > 0) {
                     log(creature + " got pregnant", PRINT_BREED);
@@ -192,7 +223,7 @@ public class WorldUpdater {
             Food food = i.next();
 
             if (creature.getPosition().distance(food.getPosition()) < creature.getSpeed() * delta
-                    * 1.25) {
+                    * model.getMoveAmount()) {
                 creature.setEnergy(creature.getEnergy() + food.getValue());
                 log("ate food with value of " + food.getValue(), PRINT_ENERGY);
                 i.remove();

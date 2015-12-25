@@ -40,7 +40,6 @@ public class CreateCreatureView extends JFrame implements ActionListener {
     private JComboBox<String> genderComboBox;
     private JButton createButton;
 
-    // TODO Default values (Save if changed)
     public CreateCreatureView(WorldController controller) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(300, 300);

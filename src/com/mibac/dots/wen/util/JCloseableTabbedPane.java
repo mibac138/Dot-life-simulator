@@ -46,8 +46,7 @@ public class JCloseableTabbedPane extends JTabbedPane {
 
             this.tab = tab;
 
-            // TODO some nicer icon
-            JButton button = new JButton(UIManager.getIcon("InternalFrame.closeIcon"));// MetalIconFactory.getInternalFrameCloseIcon(14));
+            JButton button = new JButton(UIManager.getIcon("InternalFrame.closeIcon"));
             button.setMargin(new Insets(-2, 0, -2, -5));
             button.addMouseListener(this);
             add(button);

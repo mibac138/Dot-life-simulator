@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mibac.dots.wen.Creatures;
 import com.mibac.dots.wen.controller.WorldController;
 import com.mibac.dots.wen.util.Debug;
 
@@ -44,7 +45,7 @@ public class OptionsView extends JFrame implements ActionListener {
             add(panels[i]);
         }
 
-        maxSpeedFactor = new JTextField(WorldController.MAX_SPEED_FACTOR + "");
+        maxSpeedFactor = new JTextField(WorldController.MAX_SPEED + "");
         maxSpeedFactor.setPreferredSize(new Dimension(50, 20));
 
         panels[0].add(new JLabel("Max speed factor"));
@@ -61,7 +62,7 @@ public class OptionsView extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveButton) {
-            int mSpeed = WorldController.MAX_SPEED_FACTOR;
+            int mSpeed = WorldController.MAX_SPEED;
             try {
                 mSpeed = Integer.parseInt(maxSpeedFactor.getText());
             } catch (NumberFormatException ex) {
@@ -77,7 +78,8 @@ public class OptionsView extends JFrame implements ActionListener {
                 return;
             }
 
-            WorldController.MAX_SPEED_FACTOR = mSpeed;
+            WorldController.MAX_SPEED = mSpeed;
+            Creatures.getConfig().set("util.maxSpeedFactor", mSpeed);
 
             dispose();
         }

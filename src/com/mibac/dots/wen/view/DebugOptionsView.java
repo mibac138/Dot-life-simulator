@@ -1,6 +1,6 @@
 package com.mibac.dots.wen.view;
 
-import static com.mibac.dots.wen.util.Debug.CMDS;
+import static com.mibac.dots.wen.util.Debug.CMD;
 import static com.mibac.dots.wen.util.Debug.DEBUG;
 import static com.mibac.dots.wen.util.Debug.DRAW;
 import static com.mibac.dots.wen.util.Debug.DRAW_BORDER;
@@ -102,7 +102,7 @@ public class DebugOptionsView extends JFrame implements ActionListener {
 
         cmds = new JCheckBox("Commands");
         cmds.setBounds(10, 265, w, h);
-        cmds.setSelected(CMDS.isEnabled());
+        cmds.setSelected(CMD.isEnabled());
         cmds.addActionListener(this);
         getContentPane().setLayout(null);
 
@@ -159,6 +159,6 @@ public class DebugOptionsView extends JFrame implements ActionListener {
         else if (e.getSource() == print_other)
             PRINT_OTHER.setEnabled(print_other.isSelected());
         else if (e.getSource() == cmds)
-            CMDS.setEnabled(cmds.isSelected());
+            CMD.setEnabled(cmds.isSelected());
     }
 }

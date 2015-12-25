@@ -6,6 +6,7 @@ import static com.mibac.dots.wen.util.Debug.DRAW_BORDER;
 import static com.mibac.dots.wen.util.Debug.DRAW_PATH;
 import static com.mibac.dots.wen.util.Debug.DRAW_VISION;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D.Double;
 
@@ -48,31 +49,36 @@ public class WorldView extends JPanel {
         // TODO Double buffered rendering (?)
         g.setColor(t.getBackgroundColor());
         g.fillRect(0, 0, getWidth(), getHeight());
-        int creature2 = CREATURE_SIZE / 2;
-        int food2 = FOOD_SIZE / 2;
+        int c2 = CREATURE_SIZE / 2;
+        int f2 = FOOD_SIZE / 2;
 
         int foodZoomed = applyZoom(FOOD_SIZE);
         int creatureZoomed = applyZoom(CREATURE_SIZE);
 
-        world.getFood().stream().forEach(food -> {
-            g.setColor(t.getColor(food));
-            g.fillOval(applyZoom(food.getPosition().getX() - food2 + offsetX),
-                    applyZoom(food.getPosition().getY() - food2 + offsetY), foodZoomed, foodZoomed);
+        world.getFood().stream().forEach(f -> {
+            g.setColor(f.getColor());
+            int x = applyZoom(f.getPosition().getX() - f2 + offsetX);
+            int y = applyZoom(f.getPosition().getY() - f2 + offsetY);
+            g.fillOval(x, y, foodZoomed, foodZoomed);
+            g.setColor(Color.BLACK);
+            g.drawOval(x, y, foodZoomed, foodZoomed);
         });
 
-        world.getCreatures().stream().forEach(creature -> {
-            g.setColor(t.getColor(creature));
-            g.fillOval(applyZoom(creature.getPosition().getX() - creature2 + offsetX),
-                    applyZoom(creature.getPosition().getY() - creature2 + offsetY), creatureZoomed,
-                    creatureZoomed);
+        world.getCreatures().stream().forEach(c -> {
+            g.setColor(c.getColor());
+            int x = applyZoom(c.getPosition().getX() - c2 + offsetX);
+            int y = applyZoom(c.getPosition().getY() - c2 + offsetY);
+            g.fillOval(x, y, creatureZoomed, creatureZoomed);
+            g.setColor(Color.BLACK);
+            g.drawOval(x, y, creatureZoomed, creatureZoomed);
         });
 
         Creature selected = world.getSelectedCreature();
 
         if (selected != null) {
             g.setColor(t.getSelectedCreatureColor());
-            g.drawOval(applyZoom(selected.getPosition().getX() - creature2 + offsetX),
-                    applyZoom(selected.getPosition().getY() - creature2 + offsetY), creatureZoomed,
+            g.drawOval(applyZoom(selected.getPosition().getX() - c2 + offsetX),
+                    applyZoom(selected.getPosition().getY() - c2 + offsetY), creatureZoomed,
                     creatureZoomed);
         }
 

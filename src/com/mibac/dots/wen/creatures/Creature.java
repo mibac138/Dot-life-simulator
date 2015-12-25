@@ -1,11 +1,13 @@
 package com.mibac.dots.wen.creatures;
 
+import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.mibac.dots.wen.ai.BetterAI;
 import com.mibac.dots.wen.ai.EntityAI;
+import com.mibac.dots.wen.util.ColorAnimationData;
 
 public class Creature extends Entity {
     private static final long serialVersionUID = 1L;
@@ -16,6 +18,8 @@ public class Creature extends Entity {
     };
 
     private transient Double target;
+    private transient Color targetColor;
+    private transient ColorAnimationData animData;
     private EntityAI ai;
     private Gender gender;
     private HashMap<Creature, java.lang.Double> relations;
@@ -88,6 +92,23 @@ public class Creature extends Entity {
 
     public void setTarget(Double target) {
         this.target = target;
+    }
+
+    public Color getTargetColor() {
+        return targetColor;
+    }
+
+    public void setTargetColor(Color targetColor) {
+        this.targetColor = targetColor;
+    }
+
+    public static int getColorDiff(int r1, int g1, int b1, int r2, int g2, int b2) {
+        return Math.abs(r2 - r1) + Math.abs(g2 - g1) + Math.abs(b2 - b1);
+    }
+
+    public static int getColorDiff(Color a, Color b) {
+        return getColorDiff(a.getRed(), a.getGreen(), a.getBlue(), b.getRed(), b.getGreen(),
+                b.getBlue());
     }
 
     public EntityAI getAI() {
@@ -250,5 +271,13 @@ public class Creature extends Entity {
                 + ", breedCooldownTime=" + breedCooldownTime + ", breedFactor=" + breedFactor
                 + ", fetuses=" + fetuses + ", pregnant=" + pregnant + ", position=" + position
                 + "]";
+    }
+
+    public ColorAnimationData getColorAnimation() {
+        return animData;
+    }
+
+    public void setColorAnimation(ColorAnimationData animData) {
+        this.animData = animData;
     }
 }

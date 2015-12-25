@@ -51,10 +51,10 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
             else if (key == KeyEvent.VK_DOWN)
                 controller.changeOffsetY(-5);
             else if (key == KeyEvent.VK_ADD) {
-                controller.changeSpeedFactor(1);
+                controller.changeSpeed(1);
                 i.remove();
             } else if (key == KeyEvent.VK_SUBTRACT) {
-                controller.changeSpeedFactor(-1);
+                controller.changeSpeed(-1);
                 i.remove();
             }
         }
@@ -74,10 +74,8 @@ public class WorldInputListener implements KeyListener, MouseListener, MouseWhee
         if (click != null) {
             Creature c = controller.getCreature(new Double(click.x, click.y));
             log("Clicked: Creature c = " + c, PRINT_INPUT);
-            if (c != null)
-                controller.setSelectedCreature(c);
-            // JOptionPane.showMessageDialog(null, "Found a creature! " +
-            // c.toString().substring(29));
+
+            controller.setSelectedCreature(c);
         }
 
         lastPosition = MouseInfo.getPointerInfo().getLocation();
